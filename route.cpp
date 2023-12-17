@@ -111,7 +111,6 @@ int main() {
     for (int i = 0; i < numCities; ++i) {
         costMatrix[i] = new int[numCities];
         for (int j = 0; j < numCities; ++j) {
-            cout << "Enter amount bettwen city " << i + 1 << " and city " << j + 1 << ": ";
             cin >> costMatrix[i][j];
         }
     }
