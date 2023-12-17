@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "compare": "cpp",
+        "optional": "cpp",
+        "type_traits": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
+}
