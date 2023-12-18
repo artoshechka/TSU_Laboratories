@@ -344,7 +344,7 @@ int main()
     cout << "Is small array sorted? " << smallArrayBit.Test() << " " << (smallArrayBit == smallArrayCopy) << endl;
 
     // Большой массив
-    Array largeArray(100, 1, 100000);
+    Array largeArray(100000, 1, 10000);
     Array largeArrayCopy(largeArray);
 
     auto startLargeShell = chrono::high_resolution_clock::now();
@@ -378,7 +378,6 @@ int main()
     cout << "Large array (Bit sort) time: " << durationLargeBit.count() << " milliseconds" << endl;
     cout << "Is large array sorted? " << largeArrayBit.Test() << " " << (largeArrayBit == largeArrayCopy) << endl;
 
-    // Ваш существующий код
 
     return 0;
 }
