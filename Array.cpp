@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
+// класс "Массив"
 class Array
 {
     int *a, n;
@@ -14,8 +14,11 @@ public:
     // t = 3 – массив, упорядоченный по невозрастанию
     // d – диапазон псевдослучайных чисел для неупорядоченного массива (при t = 1)
     Array(int len = 1, int t = 1, int d = 10);
+    // конструктор 2
     Array(int *, int);
+    // конструктор 3
     Array(Array &);
+    // деструктор
     ~Array();
     Array &operator=(Array &);
     int &operator[](int);
@@ -377,7 +380,6 @@ int main()
     chrono::duration<double, milli> durationLargeBit = endLargeBit - startLargeBit;
     cout << "Large array (Bit sort) time: " << durationLargeBit.count() << " milliseconds" << endl;
     cout << "Is large array sorted? " << largeArrayBit.Test() << " " << (largeArrayBit == largeArrayCopy) << endl;
-
 
     return 0;
 }

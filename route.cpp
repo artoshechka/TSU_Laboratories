@@ -2,41 +2,46 @@
 
 using namespace std;
 
-//Класс "Маршрут"
-class route {
+// Класс "Маршрут"
+class route
+{
 private:
-    int *r;  // массив, представляющий маршрут
-    int n;   // количество городов
+    int *r; // массив, представляющий маршрут
+    int n;  // количество городов
 
 public:
-    route(int num = 0);          // создает начальную перестановку по возрастанию
-    route(const route &);        // конструктор копирования
+    route(int num = 0);              // создает начальную перестановку по возрастанию
+    route(const route &);            // конструктор копирования
     route &operator=(const route &); // операция присваивания
-    ~route();                   // деструктор
+    ~route();                        // деструктор
 
-    int routePrice(int **);     // вычисляет стоимость маршрута по матрице стоимости
-    bool nextRoute();           // вычисляет следующий маршрут, используя алгоритм Дейкстры
+    int routePrice(int **); // вычисляет стоимость маршрута по матрице стоимости
+    bool nextRoute();       // вычисляет следующий маршрут, используя алгоритм Дейкстры
 
     friend ostream &operator<<(ostream &, const route &); // вывод маршрута
 };
 
-
-route::route(int num) {
+route::route(int num)
+{
     n = num;
     r = new int[n];
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i)
+    {
         r[i] = i;
     }
 }
 
-route::route(const route &other) {
+route::route(const route &other)
+{
     n = other.n;
     r = new int[n];
     memcpy(r, other.r, n * sizeof(int));
 }
 
-route &route::operator=(const route &other) {
-    if (this != &other) {
+route &route::operator=(const route &other)
+{
+    if (this != &other)
+    {
         n = other.n;
         delete[] r;
         r = new int[n];
@@ -45,33 +50,37 @@ route &route::operator=(const route &other) {
     return *this;
 }
 
-route::~route() {
+route::~route()
+{
     delete[] r;
     r = NULL;
 }
 
-int route::routePrice(int **costMatrix) {
+int route::routePrice(int **costMatrix)
+{
     int price = 0;
-    for (int i = 0; i < n - 1; ++i) {
+    for (int i = 0; i < n - 1; ++i)
+    {
         price += costMatrix[r[i]][r[i + 1]];
     }
     price += costMatrix[r[n - 1]][r[0]]; // Возвращаемся в начальный город
     return price;
 }
 
-bool route::nextRoute() {
+bool route::nextRoute()
+{
     int i = n - 2;
-    while (i >= 0 && r[i] > r[i + 1]) {
+    while (i > 0 && (r[i] > r[i + 1]))
+    {
         i--;
     }
-
-    if (i < 0) {
-        // Перестановок больше нет
+    if (r[i] != 1)
+    {
         return false;
     }
-
     int j = n - 1;
-    while (r[j] < r[i]) {
+    while (r[j] < r[i])
+    {
         j--;
     }
 
@@ -82,35 +91,39 @@ bool route::nextRoute() {
 
     // Разворачиваем оставшуюся часть перестановки вручную
     int left = i + 1, right = n - 1;
-    while (left < right) {
+    while (left < right)
+    {
         temp = r[left];
         r[left] = r[right];
         r[right] = temp;
         left++;
         right--;
     }
-
     return true;
 }
 
-std::ostream &operator<<(std::ostream &os, const route &r) {
-    for (int i = 0; i < r.n; ++i) {
+std::ostream &operator<<(std::ostream &os, const route &r)
+{
+    for (int i = 0; i < r.n; ++i)
+    {
         os << r.r[i] + 1 << " ";
     }
     os << r.r[0] + 1; // Возвращаемся в начальный город
     return os;
 }
 
-
-int main() {
+int main()
+{
     int numCities;
     cout << "Enter number of cities: ";
     cin >> numCities;
 
     int **costMatrix = new int *[numCities];
-    for (int i = 0; i < numCities; ++i) {
+    for (int i = 0; i < numCities; ++i)
+    {
         costMatrix[i] = new int[numCities];
-        for (int j = 0; j < numCities; ++j) {
+        for (int j = 0; j < numCities; ++j)
+        {
             cin >> costMatrix[i][j];
         }
     }
@@ -120,19 +133,23 @@ int main() {
     int minCost = initialRoute.routePrice(costMatrix);
     route minRoute = initialRoute;
 
-    do {
+    do
+    {
         int currentCost = initialRoute.routePrice(costMatrix);
-        if (currentCost < minCost) {
+        if (currentCost < minCost)
+        {
             minCost = currentCost;
             minRoute = initialRoute;
         }
+        cout << "route: " << initialRoute << "\t"
+             << "cost: " << currentCost << endl;
     } while (initialRoute.nextRoute());
-
     cout << "Best route: " << minRoute << endl;
     cout << "Best cost: " << minCost << endl;
 
     // Освобождение памяти
-    for (int i = 0; i < numCities; ++i) {
+    for (int i = 0; i < numCities; ++i)
+    {
         delete[] costMatrix[i];
     }
     delete[] costMatrix;

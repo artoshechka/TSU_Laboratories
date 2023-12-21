@@ -8,15 +8,20 @@ class String
     int len;
 
 public:
+    // Конструктор по количесву городов
     String(int l = 0);
+    // Конструктор по строке
     String(const char *);
+    // конструктор по другому объекту класса
     String(String &);
+    // Деструктор
     ~String()
     {
         if (str)
             delete[] str;
         str = NULL;
     }
+    // Поиск длины строки
     int strLength();
     String &operator=(const String &);
     char &operator[](int);
@@ -26,6 +31,7 @@ public:
     String &operator+=(const String &);
     friend istream &operator>>(istream &, String &);
     friend ostream &operator<<(ostream &, String &);
+    // Поиск Бойера-Мура
     int BMSearch(String &);
 };
 String::String(int l)
@@ -111,7 +117,7 @@ std::istream &operator>>(istream &in, String &other)
         temp[(other.len)++] = c;
         if (other.len >= size)
         {
-            size *= 2;
+            size += 1;
             char *newTemp = new char[size];
             strcpy(newTemp, temp);
             delete[] temp;
@@ -120,7 +126,7 @@ std::istream &operator>>(istream &in, String &other)
         c = in.get();
     }
     temp[other.len] = '\0';
-    other = temp;
+    other.str = temp;
     delete[] temp;
     return in;
 }
