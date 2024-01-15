@@ -109,17 +109,37 @@ bool Array::Test()
     int test = 0;
     for (int i = 0; i < n - 1; ++i)
     {
-        if (a[i] < a[i + 1])
+        if (a[i] > a[i + 1])
         {
-            ++test;
+            return 0;
         }
     }
-    return test == (n - 1);
+    return 1;
 }
 
 bool Array::operator==(Array other)
 {
-    return n == other.n && equal(a, a + n, other.a);
+    if (n != other.n)
+        return false;
+
+    // Создаем временные копии массивов
+    int* copyA = new int[n];
+    int* copyB = new int[other.n];
+    memcpy(copyA, a, n * sizeof(int));
+    memcpy(copyB, other.a, other.n * sizeof(int));
+
+    // Сортируем временные копии
+    sort(copyA, copyA + n);
+    sort(copyB, copyB + other.n);
+
+    // Сравниваем отсортированные копии
+    bool result = equal(copyA, copyA + n, copyB);
+
+    // Очищаем выделенную память
+    delete[] copyA;
+    delete[] copyB;
+
+    return result;
 }
 
 void Array::Shell_sort()
@@ -328,7 +348,7 @@ int main()
     auto endSmallShell = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallShell = endSmallShell - startSmallShell;
     cout << "Small array (Shell sort) time: " << durationSmallShell.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArray.Test() << " " << (smallArray == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArray.Test() << " Are elements equal? " << (smallArray == smallArrayCopy) << endl;
 
     Array smallArrayHeap(smallArrayCopy);
     auto startSmallHeap = chrono::high_resolution_clock::now();
@@ -336,7 +356,7 @@ int main()
     auto endSmallHeap = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallHeap = endSmallHeap - startSmallHeap;
     cout << "Small array (Heapsort) time: " << durationSmallHeap.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArrayHeap.Test() << " " << (smallArrayHeap == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArrayHeap.Test() << " Are elements equal? " << (smallArrayHeap == smallArrayCopy) << endl;
 
     Array smallArrayHoar(smallArrayCopy);
     auto startSmallHoar = chrono::high_resolution_clock::now();
@@ -344,7 +364,7 @@ int main()
     auto endSmallHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallHoar = endSmallHoar - startSmallHoar;
     cout << "Small array (Hoar sort) time: " << durationSmallHoar.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArrayHoar.Test() << " " << (smallArrayHoar == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArrayHoar.Test() << " Are elements equal? " << (smallArrayHoar == smallArrayCopy) << endl;
 
     Array smallArrayBit(smallArrayCopy);
     auto startSmallBit = chrono::high_resolution_clock::now();
@@ -352,10 +372,10 @@ int main()
     auto endSmallBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallBit = endSmallBit - startSmallBit;
     cout << "Small array (Bit sort) time: " << durationSmallBit.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArrayBit.Test() << " " << (smallArrayBit == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArrayBit.Test() << " Are elements equal? " << (smallArrayBit == smallArrayCopy) << endl;
 
     // Большой массив
-    Array largeArray(100000, 1, 10000);
+    Array largeArray(10000000, 1, 10000000);
     Array largeArrayCopy(largeArray);
 
     auto startLargeShell = chrono::high_resolution_clock::now();
@@ -363,7 +383,7 @@ int main()
     auto endLargeShell = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeShell = endLargeShell - startLargeShell;
     cout << "Large array (Shell sort) time: " << durationLargeShell.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArray.Test() << " " << (largeArray == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArray.Test() << " Are elements equal? " << (largeArray == largeArrayCopy) << endl;
 
     Array largeArrayHeap(largeArrayCopy);
     auto startLargeHeap = chrono::high_resolution_clock::now();
@@ -371,7 +391,7 @@ int main()
     auto endLargeHeap = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeHeap = endLargeHeap - startLargeHeap;
     cout << "Large array (Heapsort) time: " << durationLargeHeap.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArrayHeap.Test() << " " << (largeArrayHeap == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArrayHeap.Test() << " Are elements equal? " << (largeArrayHeap == largeArrayCopy) << endl;
 
     Array largeArrayHoar(largeArrayCopy);
     auto startLargeHoar = chrono::high_resolution_clock::now();
@@ -379,7 +399,7 @@ int main()
     auto endLargeHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeHoar = endLargeHoar - startLargeHoar;
     cout << "Large array (Hoar sort) time: " << durationLargeHoar.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArrayHoar.Test() << " " << (largeArrayHoar == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArrayHoar.Test() << " Are elements equal? " << (largeArrayHoar == largeArrayCopy) << endl;
 
     Array largeArrayBit(largeArrayCopy);
     auto startLargeBit = chrono::high_resolution_clock::now();
@@ -387,7 +407,7 @@ int main()
     auto endLargeBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeBit = endLargeBit - startLargeBit;
     cout << "Large array (Bit sort) time: " << durationLargeBit.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArrayBit.Test() << " " << (largeArrayBit == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArrayBit.Test() << " Are elements equal? " << (largeArrayBit == largeArrayCopy) << endl;
 
     return 0;
 }
