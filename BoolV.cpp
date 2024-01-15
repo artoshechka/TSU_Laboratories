@@ -155,7 +155,7 @@ istream &operator>>(istream &in, BoolV &bv)
 
 ostream &operator<<(ostream &out, const BoolV &bv)
 {
-    for (int i = bv.nbit - 1; i >= 0; --i)
+    for (int i = bv.m - 1; i >= 0; --i)
     {
         out << bv.v[i];
     }

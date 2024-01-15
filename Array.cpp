@@ -124,8 +124,7 @@ bool Array::operator==(Array other)
 
 void Array::Shell_sort()
 {
-    const int maxSteps = static_cast<int>(log2(n)) + 1;
-    int arrOfSteps[maxSteps];
+    int arrOfSteps[((int)(log2(n)) + 1)]; // длина массивов шагов
     int step = n;
     int stepCount = 0;
     for (int i = 0; step != 1; ++i)
@@ -152,6 +151,7 @@ void Array::Shell_sort()
 
 void Array::Heapsort()
 {
+    // Построение max-кучи - Начиная с последнего узла, не являющегося листом, и осуществляя пирамидальное упорядочивание вниз
     for (int i = n / 2 - 1; i >= 0; --i)
     {
         int parent = i;
@@ -161,16 +161,19 @@ void Array::Heapsort()
             int rightChild = 2 * parent + 2;
             int largest = parent;
 
+            // Сравниваем левого потомка с текущим наибольшим
             if (leftChild < n && a[leftChild] > a[largest])
             {
                 largest = leftChild;
             }
 
+            // Сравниваем правого потомка с текущим наибольшим
             if (rightChild < n && a[rightChild] > a[largest])
             {
                 largest = rightChild;
             }
 
+            // Если найден новый наибольший элемент, меняем их местами и продолжаем процесс
             if (largest != parent)
             {
                 swap(a[parent], a[largest]);
@@ -178,31 +181,38 @@ void Array::Heapsort()
             }
             else
             {
-                break;
+                break; // Если текущий узел находится на своем месте в куче, завершаем процесс
             }
         }
     }
 
+    // Поочередно извлекаем элементы из кучи и устанавливаем их на правильные позиции в упорядоченном массиве
     for (int i = n - 1; i > 0; --i)
     {
+        // Обмениваем корень кучи с последним элементом массива и уменьшаем размер кучи
         swap(a[0], a[i]);
         int parent = 0;
+
+        // Пирамидальное упорядочивание для уменьшенной кучи
         while (2 * parent + 1 < i)
         {
             int leftChild = 2 * parent + 1;
             int rightChild = 2 * parent + 2;
             int largest = parent;
 
+            // Сравниваем левого потомка с текущим наибольшим
             if (leftChild < i && a[leftChild] > a[largest])
             {
                 largest = leftChild;
             }
 
+            // Сравниваем правого потомка с текущим наибольшим
             if (rightChild < i && a[rightChild] > a[largest])
             {
                 largest = rightChild;
             }
 
+            // Если найден новый наибольший элемент, меняем их местами и продолжаем процесс
             if (largest != parent)
             {
                 swap(a[parent], a[largest]);
@@ -210,7 +220,7 @@ void Array::Heapsort()
             }
             else
             {
-                break;
+                break; // Если текущий узел находится на своем месте в куче, завершаем процесс
             }
         }
     }
@@ -252,15 +262,13 @@ void Array::Hoar_sort(int l, int r)
 
 void Array::Bit_sort()
 {
-    int maxBits = 32;
-    const int RADIX = 2;
     int *output = new int[n];
-    int *count = new int[RADIX];
+    int *count = new int[2]; // так как двоичная система счисения
     int shift = 0;
 
-    while (shift < maxBits)
+    while (shift < 32) // максимальное количество битов
     {
-        memset(count, 0, RADIX * sizeof(int));
+        memset(count, 0, 2 * sizeof(int));
 
         for (int i = 0; i < n; ++i)
         {

@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 // Класс "Строка"
 class String
@@ -32,12 +31,12 @@ public:
     friend istream &operator>>(istream &, String &);
     friend ostream &operator<<(ostream &, String &);
     // Поиск Бойера-Мура
-    int BMSearch(String &);
+    int BMSearch(String &); // различие от оригинала
 };
 String::String(int l)
 {
     len = l;
-    str = new char[len];
+    str = new char[len + 1];
     str[0] = '\0';
 }
 String::String(const char *other)
@@ -111,13 +110,14 @@ std::istream &operator>>(istream &in, String &other)
     other.len = 0;
     int size = 1;
     char *temp = new char[size];
+
     char c = in.get();
     while (c != '\n')
     {
-        temp[(other.len)++] = c;
+        temp[other.len++] = c;
         if (other.len >= size)
         {
-            size += 1;
+            size *= 2;
             char *newTemp = new char[size];
             strcpy(newTemp, temp);
             delete[] temp;
@@ -125,11 +125,13 @@ std::istream &operator>>(istream &in, String &other)
         }
         c = in.get();
     }
+
     temp[other.len] = '\0';
+    temp = (char *)realloc(temp, (size + 1) * sizeof(char));
     other.str = temp;
-    delete[] temp;
     return in;
 }
+
 std::ostream &operator<<(ostream &out, String &other)
 {
     out << other.str;
@@ -145,7 +147,7 @@ int String::BMSearch(String &pattern)
         return 0; // Пустой шаблон всегда считается найденным
     }
 
-    // Создаем таблицу смещений для символов в шаблоне
+    // Создаем таблицу смещений для плохих символов
     int badChar[256];
     for (int i = 0; i < 256; ++i)
     {
@@ -154,35 +156,33 @@ int String::BMSearch(String &pattern)
 
     for (int i = 0; i < patternLen - 1; ++i)
     {
-        badChar[static_cast<unsigned char>(pattern[i])] = patternLen - 1 - i;
+        badChar[pattern[i]] = patternLen - 1 - i;
     }
 
-    // Начинаем поиск
-    int i = patternLen - 1; // Индекс символа в тексте
-    int j = patternLen - 1; // Индекс символа в шаблоне
-
+    // Инициализируем указатели для поиска
+    int i = patternLen - 1, j;
     while (i < textLen)
     {
-        if (str[i] == pattern[j])
+        j = patternLen - 1;
+        int k = i;
+        while (j >= 0 && str[k] == pattern.str[j])
         {
-            // Символы совпадают, двигаемся назад по тексту и шаблону
-            if (j == 0)
-            {
-                return i; // Найдено совпадение
-            }
-            --i;
-            --j;
+            k--;
+            j--;
+        }
+
+        if (j < 0)
+        {
+            return k + 1; // Паттерн найден в след индексе
         }
         else
         {
-            // Символы не совпадают, используем таблицу смещений для выбора максимального смещения
-            i += max(badChar[static_cast<unsigned char>(str[i])], patternLen - 1 - j);
-            j = patternLen - 1;
+            i += badChar[str[i]];
         }
     }
-
-    return -1; // Совпадение не найдено
+    return -1; // Паттерн не найден
 }
+
 int main()
 {
     // Создание объектов класса String

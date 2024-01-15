@@ -69,35 +69,25 @@ int route::routePrice(int **costMatrix)
 
 bool route::nextRoute()
 {
-    int i = n - 2;
-    while (i > 0 && (r[i] > r[i + 1]))
-    {
-        i--;
-    }
-    if (r[i] != 1)
+    int i = 0;
+    for (i = n - 1; (i > 0) && (r[i - 1] >= r[i]); --i)
+        ;
+    if (i == 1)
     {
         return false;
     }
-    int j = n - 1;
-    while (r[j] < r[i])
+    i--;
+    int j = 0;
+    for (j = n - 1; (j > i) && (r[i] >= r[j]); --j)
+        ;
+    int tmp = r[j];
+    r[j] = r[i];
+    r[i] = tmp;
+    for (int j = i + 1, k = (n - 1); j < k; j++, k--)
     {
-        j--;
-    }
-
-    // Меняем местами r[i] и r[j] без использования
-    int temp = r[i];
-    r[i] = r[j];
-    r[j] = temp;
-
-    // Разворачиваем оставшуюся часть перестановки вручную
-    int left = i + 1, right = n - 1;
-    while (left < right)
-    {
-        temp = r[left];
-        r[left] = r[right];
-        r[right] = temp;
-        left++;
-        right--;
+        tmp = r[j];
+        r[j] = r[k];
+        r[k] = tmp;
     }
     return true;
 }
