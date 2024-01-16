@@ -20,6 +20,7 @@ public:
     Array(Array &);
     // деструктор
     ~Array();
+    int arrLength();
     Array &operator=(Array &);
     int &operator[](int);
     bool Test();
@@ -27,7 +28,7 @@ public:
     void Shell_sort();
     void Heapsort();
     void Hoar_sort(int, int);
-    void Bit_sort();
+    void Bit_sort(int,int);
     friend istream &operator>>(istream &, Array &);
     friend ostream &operator<<(ostream &, Array &);
 };
@@ -82,6 +83,11 @@ Array::~Array()
     a = NULL;
 }
 
+int Array::arrLength()
+{
+return n;
+}
+
 Array &Array::operator=(Array &other)
 {
     if (this != &other)
@@ -123,8 +129,8 @@ bool Array::operator==(Array other)
         return false;
 
     // Создаем временные копии массивов
-    int* copyA = new int[n];
-    int* copyB = new int[other.n];
+    int *copyA = new int[n];
+    int *copyB = new int[other.n];
     memcpy(copyA, a, n * sizeof(int));
     memcpy(copyB, other.a, other.n * sizeof(int));
 
@@ -144,7 +150,7 @@ bool Array::operator==(Array other)
 
 void Array::Shell_sort()
 {
-    int arrOfSteps[((int)(log2(n)) + 1)]; // длина массивов шагов
+    int arrOfSteps[((int)(log2(n)))]; // длина массивов шагов
     int step = n;
     int stepCount = 0;
     for (int i = 0; step != 1; ++i)
@@ -280,37 +286,61 @@ void Array::Hoar_sort(int l, int r)
     Hoar_sort(j + 1, r);
 }
 
-void Array::Bit_sort()
+void Array::Bit_sort(int l, int r)
 {
-    int *output = new int[n];
-    int *count = new int[2]; // так как двоичная система счисения
-    int shift = 0;
+    // Находим максимальное число в массиве
+    int max_num = *max_element(a, a + n);
 
-    while (shift < 32) // максимальное количество битов
+    // Определяем количество разрядов в максимальном числе
+    int k = 0;
+    while (max_num > 0)
     {
-        memset(count, 0, 2 * sizeof(int));
-
-        for (int i = 0; i < n; ++i)
-        {
-            int index = (a[i] >> shift) & 1;
-            count[index]++;
-        }
-
-        count[1] += count[0];
-
-        for (int i = n - 1; i >= 0; --i)
-        {
-            int index = (a[i] >> shift) & 1;
-            output[--count[index]] = a[i];
-        }
-
-        memcpy(a, output, n * sizeof(int));
-
-        shift++;
+        max_num >>= 1;
+        k++;
     }
+    if (l >= r || k < 0)
+        return;
 
-    delete[] output;
-    delete[] count;
+    int i = l, j = r;
+
+    while (i <= j)
+    {
+        while (i <= j && ((a[i] >> k) & 1) == 0)
+            i++;
+
+        while (i <= j && ((a[j] >> k) & 1) == 1)
+            j--;
+
+        if (i < j)
+            swap(a[i++], a[j--]);
+    }
+    // Рекурсивная функция для сортировки по битам
+    /*function<void(int, int, int)> Radix_sort = [&](int l, int r, int k)
+    {
+        if (l >= r || k < 0)
+            return;
+
+        int i = l, j = r;
+
+        while (i <= j)
+        {
+            while (i <= j && ((a[i] >> k) & 1) == 0)
+                i++;
+
+            while (i <= j && ((a[j] >> k) & 1) == 1)
+                j--;
+
+            if (i < j)
+                swap(a[i++], a[j--]);
+        }
+
+        Radix_sort(l, j, k - 1);
+        Radix_sort(i, r, k - 1);
+    };*/
+
+    // Вызываем рекурсивную функцию для каждого разряда
+    Bit_sort(l, j);
+    Bit_sort(i, r);
 }
 
 istream &operator>>(istream &in, Array &array)
