@@ -28,7 +28,7 @@ public:
     void Shell_sort();
     void Heapsort();
     void Hoar_sort(int, int);
-    void Bit_sort(int,int);
+    void Bit_sort(int, int);
     friend istream &operator>>(istream &, Array &);
     friend ostream &operator<<(ostream &, Array &);
 };
@@ -85,7 +85,7 @@ Array::~Array()
 
 int Array::arrLength()
 {
-return n;
+    return n;
 }
 
 Array &Array::operator=(Array &other)
@@ -175,8 +175,8 @@ void Array::Shell_sort()
     }
 }
 
-void Array::Heapsort()
-{
+void Array::Heapsort() // оптимизировать
+{                      // просеивание в отдельную функцию
     // Построение max-кучи - Начиная с последнего узла, не являющегося листом, и осуществляя пирамидальное упорядочивание вниз
     for (int i = n / 2 - 1; i >= 0; --i)
     {
@@ -202,7 +202,7 @@ void Array::Heapsort()
             // Если найден новый наибольший элемент, меняем их местами и продолжаем процесс
             if (largest != parent)
             {
-                swap(a[parent], a[largest]);
+                swap(a[parent], a[largest]); // обмен прямые вставки
                 parent = largest;
             }
             else
@@ -254,8 +254,6 @@ void Array::Heapsort()
 
 void Array::Hoar_sort(int l, int r)
 {
-    if (r == -1)
-        r = n - 1;
 
     if (l >= r)
         return;
@@ -370,11 +368,13 @@ int main()
     srand(time(NULL));
 
     // Маленький массив
-    Array smallArray(5, 1, 100);
+    Array smallArray(20, 1, 100);
     Array smallArrayCopy(smallArray);
 
     auto startSmallShell = chrono::high_resolution_clock::now();
+    //cout << smallArray;
     smallArray.Shell_sort();
+    //cout << smallArray;
     auto endSmallShell = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallShell = endSmallShell - startSmallShell;
     cout << "Small array (Shell sort) time: " << durationSmallShell.count() << " milliseconds" << endl;
@@ -382,7 +382,9 @@ int main()
 
     Array smallArrayHeap(smallArrayCopy);
     auto startSmallHeap = chrono::high_resolution_clock::now();
+    //cout << smallArrayHeap;
     smallArrayHeap.Heapsort();
+    //cout << smallArrayHeap;
     auto endSmallHeap = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallHeap = endSmallHeap - startSmallHeap;
     cout << "Small array (Heapsort) time: " << durationSmallHeap.count() << " milliseconds" << endl;
@@ -390,22 +392,24 @@ int main()
 
     Array smallArrayHoar(smallArrayCopy);
     auto startSmallHoar = chrono::high_resolution_clock::now();
-    smallArrayHoar.Hoar_sort(0, -1);
+    //cout << smallArrayHoar;
+    smallArrayHoar.Hoar_sort(0, smallArrayHoar.arrLength() - 1);
+    //cout << smallArrayHoar;
     auto endSmallHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallHoar = endSmallHoar - startSmallHoar;
     cout << "Small array (Hoar sort) time: " << durationSmallHoar.count() << " milliseconds" << endl;
     cout << "Is small array sorted? " << smallArrayHoar.Test() << " Are elements equal? " << (smallArrayHoar == smallArrayCopy) << endl;
 
-    Array smallArrayBit(smallArrayCopy);
+    /*Array smallArrayBit(smallArrayCopy);
     auto startSmallBit = chrono::high_resolution_clock::now();
-    smallArrayBit.Bit_sort();
+    smallArrayBit.Bit_sort(0, smallArrayBit.arrLength() - 1);
     auto endSmallBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallBit = endSmallBit - startSmallBit;
     cout << "Small array (Bit sort) time: " << durationSmallBit.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArrayBit.Test() << " Are elements equal? " << (smallArrayBit == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArrayBit.Test() << " Are elements equal? " << (smallArrayBit == smallArrayCopy) << endl;*/
 
     // Большой массив
-    Array largeArray(10000000, 1, 10000000);
+    Array largeArray(100000, 1, 10000000);
     Array largeArrayCopy(largeArray);
 
     auto startLargeShell = chrono::high_resolution_clock::now();
@@ -425,7 +429,7 @@ int main()
 
     Array largeArrayHoar(largeArrayCopy);
     auto startLargeHoar = chrono::high_resolution_clock::now();
-    largeArrayHoar.Hoar_sort(0, -1);
+    largeArrayHoar.Hoar_sort(0, largeArrayHoar.arrLength() - 1);
     auto endLargeHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeHoar = endLargeHoar - startLargeHoar;
     cout << "Large array (Hoar sort) time: " << durationLargeHoar.count() << " milliseconds" << endl;
@@ -433,7 +437,7 @@ int main()
 
     Array largeArrayBit(largeArrayCopy);
     auto startLargeBit = chrono::high_resolution_clock::now();
-    largeArrayBit.Bit_sort();
+    largeArrayBit.Bit_sort(0, largeArrayBit.arrLength() - 1);
     auto endLargeBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeBit = endLargeBit - startLargeBit;
     cout << "Large array (Bit sort) time: " << durationLargeBit.count() << " milliseconds" << endl;

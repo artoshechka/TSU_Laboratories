@@ -31,7 +31,7 @@ public:
     friend istream &operator>>(istream &, String &);
     friend ostream &operator<<(ostream &, String &);
     // Поиск Бойера-Мура
-    int BMSearch(String &); // различие от оригинала
+    int BMSearch(String &); 
 };
 String::String(int l)
 {
