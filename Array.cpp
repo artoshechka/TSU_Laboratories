@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+
 // класс "Массив"
-class Array
-{
+class Array {
     int *a, n;
 
 public:
@@ -14,84 +14,87 @@ public:
     // t = 3 – массив, упорядоченный по невозрастанию
     // d – диапазон псевдослучайных чисел для неупорядоченного массива (при t = 1)
     Array(int len = 1, int t = 1, int d = 10);
+
     // конструктор 2
     Array(int *, int);
+
     // конструктор 3
     Array(Array &);
+
     // деструктор
     ~Array();
+
     int arrLength();
+
     Array &operator=(Array &);
+
     int &operator[](int);
+
     bool Test();
+
     bool operator==(Array);
+
     void Shell_sort();
+
     void Heapsort();
+
     void Hoar_sort(int, int);
-    void Bit_sort(int, int);
+
+    void Bit_sort(int, int, int);
+
     friend istream &operator>>(istream &, Array &);
+
     friend ostream &operator<<(ostream &, Array &);
 };
 
-Array::Array(int len, int t, int d)
-{
+Array::Array(int len, int t, int d) {
     n = len;
     a = new int[n];
-    switch (t)
-    {
-    case 1:
-        for (int i = 0; i < n; ++i)
-        {
-            a[i] = rand() % d;
-        }
-        break;
-    case 2:
-        for (int i = n - 1; i >= 0; --i)
-        {
-            a[i] = i;
-        }
-        break;
-    case 3:
-        for (int i = 0; i < n; ++i)
-        {
-            a[i] = i;
-        }
-        break;
-    default:
-        cout << "INVALID t";
-        break;
+    switch (t) {
+        case 1:
+            for (int i = 0; i < n; ++i) {
+                a[i] = rand() % d;
+            }
+            break;
+        case 2:
+            for (int i = n - 1; i >= 0; --i) {
+                a[i] = i;
+            }
+            break;
+        case 3:
+            for (int i = 0; i < n; ++i) {
+                a[i] = i;
+            }
+            break;
+        default:
+            cout << "INVALID t";
+            break;
     }
 }
 
-Array::Array(int *arr, int len)
-{
+Array::Array(int *arr, int len) {
     n = len;
     a = new int[n];
     memcpy(a, arr, n * sizeof(int));
 }
 
-Array::Array(Array &other)
-{
+Array::Array(Array &other) {
     n = other.n;
     a = new int[n];
     memcpy(a, other.a, n * sizeof(int));
 }
 
-Array::~Array()
-{
+Array::~Array() {
     delete[] a;
     a = NULL;
 }
 
-int Array::arrLength()
-{
+int Array::arrLength() {
     return n;
 }
 
-Array &Array::operator=(Array &other)
-{
-    if (this != &other)
-    {
+Array &Array::operator=(Array &other) {
+    if (this != &other) {
         n = other.n;
         delete[] a;
         a = new int[n];
@@ -100,31 +103,25 @@ Array &Array::operator=(Array &other)
     return *this;
 }
 
-int &Array::operator[](int i)
-{
-    if (i < 0 || i >= n)
-    {
+int &Array::operator[](int i) {
+    if (i < 0 || i >= n) {
         cout << "OUT OF RANGE";
         return a[0];
     }
     return a[i];
 }
 
-bool Array::Test()
-{
+bool Array::Test() {
     int test = 0;
-    for (int i = 0; i < n - 1; ++i)
-    {
-        if (a[i] > a[i + 1])
-        {
+    for (int i = 0; i < n - 1; ++i) {
+        if (a[i] > a[i + 1]) {
             return 0;
         }
     }
     return 1;
 }
 
-bool Array::operator==(Array other)
-{
+bool Array::operator==(Array other) {
     if (n != other.n)
         return false;
 
@@ -148,26 +145,21 @@ bool Array::operator==(Array other)
     return result;
 }
 
-void Array::Shell_sort()
-{
-    int arrOfSteps[((int)(log2(n)))]; // длина массивов шагов
+void Array::Shell_sort() {
+    int arrOfSteps[((int) (log2(n)))]; // длина массивов шагов
     int step = n;
     int stepCount = 0;
-    for (int i = 0; step != 1; ++i)
-    {
+    for (int i = 0; step != 1; ++i) {
         step /= 2;
         arrOfSteps[stepCount++] = step;
     }
-    for (int s = 0; s < stepCount; ++s)
-    {
+    for (int s = 0; s < stepCount; ++s) {
         int gap = arrOfSteps[s];
 
-        for (int i = gap; i < n; ++i)
-        {
+        for (int i = gap; i < n; ++i) {
             int temp = a[i];
             int j;
-            for (j = i; j >= gap && a[j - gap] > temp; j -= gap)
-            {
+            for (j = i; j >= gap && a[j - gap] > temp; j -= gap) {
                 a[j] = a[j - gap];
             }
             a[j] = temp;
@@ -178,82 +170,67 @@ void Array::Shell_sort()
 void Array::Heapsort() // оптимизировать
 {                      // просеивание в отдельную функцию
     // Построение max-кучи - Начиная с последнего узла, не являющегося листом, и осуществляя пирамидальное упорядочивание вниз
-    for (int i = n / 2 - 1; i >= 0; --i)
-    {
+    for (int i = n / 2 - 1; i >= 0; --i) {
         int parent = i;
-        while (2 * parent + 1 < n)
-        {
+        while (2 * parent + 1 < n) {
             int leftChild = 2 * parent + 1;
             int rightChild = 2 * parent + 2;
             int largest = parent;
 
             // Сравниваем левого потомка с текущим наибольшим
-            if (leftChild < n && a[leftChild] > a[largest])
-            {
+            if (leftChild < n && a[leftChild] > a[largest]) {
                 largest = leftChild;
             }
 
             // Сравниваем правого потомка с текущим наибольшим
-            if (rightChild < n && a[rightChild] > a[largest])
-            {
+            if (rightChild < n && a[rightChild] > a[largest]) {
                 largest = rightChild;
             }
 
             // Если найден новый наибольший элемент, меняем их местами и продолжаем процесс
-            if (largest != parent)
-            {
+            if (largest != parent) {
                 swap(a[parent], a[largest]); // обмен прямые вставки
                 parent = largest;
-            }
-            else
-            {
+            } else {
                 break; // Если текущий узел находится на своем месте в куче, завершаем процесс
             }
         }
     }
 
     // Поочередно извлекаем элементы из кучи и устанавливаем их на правильные позиции в упорядоченном массиве
-    for (int i = n - 1; i > 0; --i)
-    {
+    for (int i = n - 1; i > 0; --i) {
         // Обмениваем корень кучи с последним элементом массива и уменьшаем размер кучи
         swap(a[0], a[i]);
         int parent = 0;
 
         // Пирамидальное упорядочивание для уменьшенной кучи
-        while (2 * parent + 1 < i)
-        {
+        while (2 * parent + 1 < i) {
             int leftChild = 2 * parent + 1;
             int rightChild = 2 * parent + 2;
             int largest = parent;
 
             // Сравниваем левого потомка с текущим наибольшим
-            if (leftChild < i && a[leftChild] > a[largest])
-            {
+            if (leftChild < i && a[leftChild] > a[largest]) {
                 largest = leftChild;
             }
 
             // Сравниваем правого потомка с текущим наибольшим
-            if (rightChild < i && a[rightChild] > a[largest])
-            {
+            if (rightChild < i && a[rightChild] > a[largest]) {
                 largest = rightChild;
             }
 
             // Если найден новый наибольший элемент, меняем их местами и продолжаем процесс
-            if (largest != parent)
-            {
+            if (largest != parent) {
                 swap(a[parent], a[largest]);
                 parent = largest;
-            }
-            else
-            {
+            } else {
                 break; // Если текущий узел находится на своем месте в куче, завершаем процесс
             }
         }
     }
 }
 
-void Array::Hoar_sort(int l, int r)
-{
+void Array::Hoar_sort(int l, int r) {
 
     if (l >= r)
         return;
@@ -262,15 +239,12 @@ void Array::Hoar_sort(int l, int r)
     int i = l - 1;
     int j = r + 1;
 
-    while (true)
-    {
-        do
-        {
+    while (true) {
+        do {
             i++;
         } while (a[i] < x);
 
-        do
-        {
+        do {
             j--;
         } while (a[j] > x);
 
@@ -284,87 +258,59 @@ void Array::Hoar_sort(int l, int r)
     Hoar_sort(j + 1, r);
 }
 
-void Array::Bit_sort(int l, int r)
-{
-    // Находим максимальное число в массиве
-    int max_num = *max_element(a, a + n);
-
-    // Определяем количество разрядов в максимальном числе
-    int k = 0;
-    while (max_num > 0)
-    {
-        max_num >>= 1;
-        k++;
-    }
-    if (l >= r || k < 0)
+void Array::Bit_sort(int l, int r, int k) {
+    if (l >= r || k < 0) {
         return;
+    }
 
     int i = l, j = r;
 
-    while (i <= j)
-    {
-        while (i <= j && ((a[i] >> k) & 1) == 0)
+    while (i <= j) {
+        // Перемещение i до тех пор, пока k-ый бит равен 0
+        while (i <= j && ((a[i] >> k) & 1) == 0) {
             i++;
-
-        while (i <= j && ((a[j] >> k) & 1) == 1)
-            j--;
-
-        if (i < j)
-            swap(a[i++], a[j--]);
-    }
-    // Рекурсивная функция для сортировки по битам
-    /*function<void(int, int, int)> Radix_sort = [&](int l, int r, int k)
-    {
-        if (l >= r || k < 0)
-            return;
-
-        int i = l, j = r;
-
-        while (i <= j)
-        {
-            while (i <= j && ((a[i] >> k) & 1) == 0)
-                i++;
-
-            while (i <= j && ((a[j] >> k) & 1) == 1)
-                j--;
-
-            if (i < j)
-                swap(a[i++], a[j--]);
         }
 
-        Radix_sort(l, j, k - 1);
-        Radix_sort(i, r, k - 1);
-    };*/
+        // Перемещение j до тех пор, пока k-ый бит равен 1
+        while (i <= j && ((a[j] >> k) & 1) == 1) {
+            j--;
+        }
 
-    // Вызываем рекурсивную функцию для каждого разряда
-    Bit_sort(l, j);
-    Bit_sort(i, r);
+        // Обмен a[i] и a[j]
+        if (i < j) {
+            std::swap(a[i], a[j]);
+            i++;
+            j--;
+        }
+    }
+
+    // Рекурсивная сортировка подмассива [l, j] по (k-1)-ому биту
+    Bit_sort(l, j, k - 1);
+
+    // Рекурсивная сортировка подмассива [i, r] по (k-1)-ому биту
+    Bit_sort(i, r, k - 1);
 }
 
-istream &operator>>(istream &in, Array &array)
-{
+
+istream &operator>>(istream &in, Array &array) {
     cout << "Enter len";
     in >> array.n;
     cout << "Enter numbers";
-    for (int i = 0; i < array.n; ++i)
-    {
+    for (int i = 0; i < array.n; ++i) {
         in >> array.a[i];
     }
     return in;
 }
 
-ostream &operator<<(ostream &out, Array &array)
-{
-    for (int i = 0; i < array.n; ++i)
-    {
+ostream &operator<<(ostream &out, Array &array) {
+    for (int i = 0; i < array.n; ++i) {
         out << array.a[i] << " ";
     }
     out << endl;
     return out;
 }
 
-int main()
-{
+int main() {
     srand(time(NULL));
 
     // Маленький массив
@@ -378,7 +324,8 @@ int main()
     auto endSmallShell = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallShell = endSmallShell - startSmallShell;
     cout << "Small array (Shell sort) time: " << durationSmallShell.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArray.Test() << " Are elements equal? " << (smallArray == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArray.Test() << " Are elements equal? " << (smallArray == smallArrayCopy)
+         << endl;
 
     Array smallArrayHeap(smallArrayCopy);
     auto startSmallHeap = chrono::high_resolution_clock::now();
@@ -388,7 +335,8 @@ int main()
     auto endSmallHeap = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallHeap = endSmallHeap - startSmallHeap;
     cout << "Small array (Heapsort) time: " << durationSmallHeap.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArrayHeap.Test() << " Are elements equal? " << (smallArrayHeap == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArrayHeap.Test() << " Are elements equal? "
+         << (smallArrayHeap == smallArrayCopy) << endl;
 
     Array smallArrayHoar(smallArrayCopy);
     auto startSmallHoar = chrono::high_resolution_clock::now();
@@ -398,15 +346,17 @@ int main()
     auto endSmallHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallHoar = endSmallHoar - startSmallHoar;
     cout << "Small array (Hoar sort) time: " << durationSmallHoar.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArrayHoar.Test() << " Are elements equal? " << (smallArrayHoar == smallArrayCopy) << endl;
+    cout << "Is small array sorted? " << smallArrayHoar.Test() << " Are elements equal? "
+         << (smallArrayHoar == smallArrayCopy) << endl;
 
-    /*Array smallArrayBit(smallArrayCopy);
+    Array smallArrayBit(smallArrayCopy);
     auto startSmallBit = chrono::high_resolution_clock::now();
-    smallArrayBit.Bit_sort(0, smallArrayBit.arrLength() - 1);
+    smallArrayBit.Bit_sort(0, smallArrayBit.arrLength() - 1, sizeof(int) * 8 - 1);
     auto endSmallBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallBit = endSmallBit - startSmallBit;
     cout << "Small array (Bit sort) time: " << durationSmallBit.count() << " milliseconds" << endl;
-    cout << "Is small array sorted? " << smallArrayBit.Test() << " Are elements equal? " << (smallArrayBit == smallArrayCopy) << endl;*/
+    cout << "Is small array sorted? " << smallArrayBit.Test() << " Are elements equal? "
+         << (smallArrayBit == smallArrayCopy) << endl;
 
     // Большой массив
     Array largeArray(100000, 1, 10000000);
@@ -417,7 +367,8 @@ int main()
     auto endLargeShell = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeShell = endLargeShell - startLargeShell;
     cout << "Large array (Shell sort) time: " << durationLargeShell.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArray.Test() << " Are elements equal? " << (largeArray == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArray.Test() << " Are elements equal? " << (largeArray == largeArrayCopy)
+         << endl;
 
     Array largeArrayHeap(largeArrayCopy);
     auto startLargeHeap = chrono::high_resolution_clock::now();
@@ -425,7 +376,8 @@ int main()
     auto endLargeHeap = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeHeap = endLargeHeap - startLargeHeap;
     cout << "Large array (Heapsort) time: " << durationLargeHeap.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArrayHeap.Test() << " Are elements equal? " << (largeArrayHeap == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArrayHeap.Test() << " Are elements equal? "
+         << (largeArrayHeap == largeArrayCopy) << endl;
 
     Array largeArrayHoar(largeArrayCopy);
     auto startLargeHoar = chrono::high_resolution_clock::now();
@@ -433,15 +385,17 @@ int main()
     auto endLargeHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeHoar = endLargeHoar - startLargeHoar;
     cout << "Large array (Hoar sort) time: " << durationLargeHoar.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArrayHoar.Test() << " Are elements equal? " << (largeArrayHoar == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArrayHoar.Test() << " Are elements equal? "
+         << (largeArrayHoar == largeArrayCopy) << endl;
 
     Array largeArrayBit(largeArrayCopy);
     auto startLargeBit = chrono::high_resolution_clock::now();
-    largeArrayBit.Bit_sort(0, largeArrayBit.arrLength() - 1);
+    largeArrayBit.Bit_sort(0, largeArrayBit.arrLength() - 1, sizeof(int) * 8 - 1);
     auto endLargeBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeBit = endLargeBit - startLargeBit;
     cout << "Large array (Bit sort) time: " << durationLargeBit.count() << " milliseconds" << endl;
-    cout << "Is large array sorted? " << largeArrayBit.Test() << " Are elements equal? " << (largeArrayBit == largeArrayCopy) << endl;
+    cout << "Is large array sorted? " << largeArrayBit.Test() << " Are elements equal? "
+         << (largeArrayBit == largeArrayCopy) << endl;
 
     return 0;
 }
