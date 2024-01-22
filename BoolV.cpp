@@ -1,173 +1,178 @@
 #include <bits/stdc++.h>
+
 int BITS = sizeof(unsigned int) * 8;
 using namespace std;
 
-// Класс булев вектор
-class BoolV
-{
+/// Класс булев вектор
+class BoolV {
     unsigned int *v;
     int nbit, m; // nbit – количество бит вектора, m – количество элементов массива v
 public:
-    BoolV(int nn = 1);   // формируется булев вектор из nn бит; все биты со значениями 0
+    BoolV(int nn = 1); // формируется булев вектор из nn бит; все биты со значениями 0
     BoolV(const char *); // формируется булев вектор по строке из нулей и единиц
     BoolV(const BoolV &);
+
     ~BoolV();
 
     void Set1(int); // устанавливает указанный бит в 1
     void Set0(int); // устанавливает указанный бит в 0
     int operator[](int);
+
     BoolV operator=(const BoolV &);
+
     bool operator==(const BoolV &); // равенство векторов
     BoolV operator|(const BoolV &);
+
     BoolV operator&(const BoolV &);
+
     BoolV operator~();
 
     friend ostream &operator<<(ostream &, const BoolV &);
+
     friend istream &operator>>(istream &, BoolV &);
+
+    // Дополнительно (не обязательно)
+    int weight(); //вес вектора
+    BoolV operator<<(int); //сдвиг на k бит влево
+    BoolV operator>>(int); //сдвиг на k бит вправо
 };
 
-BoolV::BoolV(int nn)
-{
+BoolV::BoolV(int nn) {
     nbit = nn;
-    m = (nbit + BITS - 1) / 32;
+    m = (nbit - 1) / 32 + 1;
     v = new unsigned int[m];
+    for (int i = 0; i < m; ++i) {
+        v[i] = 0;
+    }
 }
 
-BoolV::BoolV(const char *other)
-{
-    nbit = strlen(other);
-    m = (nbit + BITS - 1) / 32;
+BoolV::BoolV(const char *str) {
+    nbit = strlen(str);
+    m = (nbit - 1) / 32 + 1;
     v = new unsigned int[m];
-    for (int i = 0; i < nbit; ++i)
-    {
-        if (other[i] == '1')
-        {
-            Set1(i);
+    for (int i = 0; i < m; ++i) {
+        v[i] = 0;
+    }
+    for (int i = 0; i < nbit; ++i) {
+        if (str[nbit - i - 1] == '1') {
+            v[i / 32] = v[i / 32] | (1 << (i % 32));
         }
     }
 }
 
-BoolV::BoolV(const BoolV &other)
-{
-    if (this != &other)
-    {
-        nbit = other.nbit;
-        m = other.m;
-        delete[] v;
-        v = new unsigned int[m];
-        memcpy(v, other.v, m * sizeof(unsigned int));
+BoolV::BoolV(const BoolV &other) {
+    nbit = other.nbit;
+    m = other.m;
+    v = new unsigned int[m];
+    for (int i = 0; i < m; ++i) {
+        v[i] = other.v[i];
     }
 }
 
-BoolV::~BoolV()
-{
-    delete[] v;
+BoolV::~BoolV() {
+    if (v)
+        delete[] v;
     v = NULL;
 }
 
-void BoolV::Set1(int bit)
-{
-    v[bit / BITS] |= (1 << (bit % BITS));
+void BoolV::Set1(int bit) {
+    if ((bit < nbit) && (bit >= 0)) {
+        v[bit / 32] = v[bit / 32] | (1 << (bit % 32));//для эдемента в котором лежит бит
+    } else {
+        cout << "out of bit indexes";
+    }
+
 }
 
-void BoolV::Set0(int bit)
-{
-    v[bit / BITS] &= ~(1 << (bit % BITS));
+void BoolV::Set0(int bit) {
+    if ((bit < nbit) && (bit >= 0)) {
+        v[bit / 32] = v[bit / 32] & ~(1 << (bit % 32));//для эдемента в котором лежит бит
+    } else {
+        cout << "out of bit indexes";
+    }
 }
 
-int BoolV::operator[](int bit)
-{
-    return ((v[bit / 32] >> (bit % 32)) & 1);
+int BoolV::operator[](int bitId) {
+    if ((bitId < nbit) && (bitId >= 0)) {
+        return ((v[bitId / 32] & (1 << (bitId % 32))) == 0 ? 0 : 1);
+    } else {
+        cout << "out of bit indexes";
+        return -1;
+    }
 }
 
-BoolV BoolV::operator=(const BoolV &other)
-{
-    if (this != &other)
-    {
+BoolV BoolV::operator=(const BoolV &other) {
+    if (this != &other) {
         nbit = other.nbit;
         m = other.m;
         delete[] v;
         v = new unsigned int[m];
-        memcpy(v, other.v, m * sizeof(unsigned int));
+        for (int i = 0; i < other.m; ++i) {
+            v[i] = other.v[i];
+        }
     }
     return *this;
 }
 
-bool BoolV::operator==(const BoolV &other)
-{
-    bool flag = true;
-    int i = 0;
-    if (nbit == other.nbit)
-    {
-        for (int i = 0; i < m; ++i)
-        {
-            if (v[i] != other.v[i])
-            {
-                flag = false;
-                break;
-            }
+bool BoolV::operator==(const BoolV &other) {
+    if (nbit != other.nbit || m != other.m) {
+        return false;
+    }
+    for (int i = 0; i < m; ++i) {
+        if (v[i] != other.v[i]) {
+            return false;
         }
     }
-    else
-    {
-        flag = false;
-    }
-    return flag;
+    return true;
 }
 
-BoolV BoolV::operator|(const BoolV &other)
-{
-    BoolV result(max(nbit, other.nbit));
-    for (int i = 0; i < result.m; ++i)
-    {
-        result.v[i] = v[i] | other.v[i];
+BoolV BoolV::operator|(const BoolV &other) {
+    BoolV temp(nbit > other.nbit ? *this : other);
+    for (int i = 0; i < (nbit < other.nbit ? other.m : m); ++i) {
+        temp.v[i] |= (nbit < other.nbit ? other.v[i] : v[i]);
     }
-    return result;
+    return temp;
 }
 
-BoolV BoolV::operator&(const BoolV &other)
-{
-    BoolV result(max(nbit, other.nbit));
-    for (int i = 0; i < result.m; ++i)
-    {
-        result.v[i] = v[i] & other.v[i];
+BoolV BoolV::operator&(const BoolV &other) {
+    BoolV temp(nbit > other.nbit ? *this : other);
+    for (int i = 0; i < (nbit < other.nbit ? other.m : m); ++i) {
+        temp.v[i] &= (nbit < other.nbit ? other.v[i] : v[i]);
     }
-    return result;
+    return temp;
 }
 
-BoolV BoolV::operator~()
-{
-    BoolV result(nbit);
-    for (int i = 0; i < m; ++i)
-    {
-        result.v[i] = ~v[i];
-    }
-    return result;
-}
-istream &operator>>(istream &in, BoolV &bv)
-{
-    string bools;
-    in >> bools;
-    BoolV temp(bools.c_str());
-    bv = temp;
-    return in;
-}
 
-ostream &operator<<(ostream &out, const BoolV &bv)
-{
-    for (int i = bv.m - 1; i >= 0; --i)
-    {
-        out << bv.v[i];
+ostream &operator<<(ostream &out, const BoolV &boolV) {
+    for (int i = boolV.nbit - 1; i >= 0; --i) {
+        out << ((boolV.v[i / 32] & (1 << (i % 32))) == 0 ? 0 : 1);
     }
     return out;
 }
-int main()
-{
+
+istream &operator>>(istream &in, BoolV &boolV) {
+    string str;
+    in >> str;
+    BoolV temp(str.c_str());
+    boolV = temp;
+    return in;
+
+}
+
+BoolV BoolV::operator~() {
+    BoolV temp(*this);
+    for (int i = 0; i < m; ++i) {
+        temp.v[i] = ~temp.v[i];
+    }
+    return temp;
+}
+
+int main() {
     // Пример использования булевого вектора
     BoolV bv1(8); // Создание булевого вектора из 8 бит
-    cout << bv1;
+    cout << "created bv1: " << bv1 << endl;
     bv1.Set1(1); // Установка второго бита в 1
-    bv1.Set1(3); // Установка четвертого бита в 1
+    bv1.Set1(2); // Установка четвертого бита в 1
 
     cout << "bv1: " << bv1 << endl; // Вывод на экран
 
@@ -186,16 +191,13 @@ int main()
     BoolV bv6 = bv1; // Копирование
     cout << "bv6 (copied from bv1): " << bv6 << endl;
 
-    if (bv1 == bv6)
-    {
+    if (bv1 == bv6) {
         cout << "bv1 is equal to bv6" << endl;
-    }
-    else
-    {
+    } else {
         cout << "bv1 is not equal to bv6" << endl;
     }
 
-    cout << "Enter a binary string: ";
+    cout << "Enter a binary string:";
     cin >> bv6; // Ввод булевого вектора с клавиатуры
     cout << "You entered: " << bv6 << endl;
 
