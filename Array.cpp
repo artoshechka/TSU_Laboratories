@@ -38,9 +38,9 @@ public:
 
     void Heapsort();
 
-    void Hoar_sort(int, int);
+    void Hoar_sort();
 
-    void Bit_sort(int, int, int);
+    void Bit_sort();
 
     friend istream &operator>>(istream &, Array &);
 
@@ -167,70 +167,53 @@ void Array::Shell_sort() {
     }
 }
 
-void Array::Heapsort() // оптимизировать
-{                      // просеивание в отдельную функцию
-    // Построение max-кучи - Начиная с последнего узла, не являющегося листом, и осуществляя пирамидальное упорядочивание вниз
-    for (int i = n / 2 - 1; i >= 0; --i) {
-        int parent = i;
-        while (2 * parent + 1 < n) {
-            int leftChild = 2 * parent + 1;
-            int rightChild = 2 * parent + 2;
-            int largest = parent;
+// Функция для построения max-кучи без рекурсии
+void buildMaxHeapIterative(int arr[], int n, int i) {
+    while (true) {
+        int largest = i;
+        int leftChild = 2 * i + 1;
+        int rightChild = 2 * i + 2;
 
-            // Сравниваем левого потомка с текущим наибольшим
-            if (leftChild < n && a[leftChild] > a[largest]) {
-                largest = leftChild;
-            }
-
-            // Сравниваем правого потомка с текущим наибольшим
-            if (rightChild < n && a[rightChild] > a[largest]) {
-                largest = rightChild;
-            }
-
-            // Если найден новый наибольший элемент, меняем их местами и продолжаем процесс
-            if (largest != parent) {
-                swap(a[parent], a[largest]); // обмен прямые вставки
-                parent = largest;
-            } else {
-                break; // Если текущий узел находится на своем месте в куче, завершаем процесс
-            }
+        if (leftChild < n && arr[leftChild] > arr[largest]) {
+            largest = leftChild;
         }
-    }
 
-    // Поочередно извлекаем элементы из кучи и устанавливаем их на правильные позиции в упорядоченном массиве
-    for (int i = n - 1; i > 0; --i) {
-        // Обмениваем корень кучи с последним элементом массива и уменьшаем размер кучи
-        swap(a[0], a[i]);
-        int parent = 0;
+        if (rightChild < n && arr[rightChild] > arr[largest]) {
+            largest = rightChild;
+        }
 
-        // Пирамидальное упорядочивание для уменьшенной кучи
-        while (2 * parent + 1 < i) {
-            int leftChild = 2 * parent + 1;
-            int rightChild = 2 * parent + 2;
-            int largest = parent;
-
-            // Сравниваем левого потомка с текущим наибольшим
-            if (leftChild < i && a[leftChild] > a[largest]) {
-                largest = leftChild;
-            }
-
-            // Сравниваем правого потомка с текущим наибольшим
-            if (rightChild < i && a[rightChild] > a[largest]) {
-                largest = rightChild;
-            }
-
-            // Если найден новый наибольший элемент, меняем их местами и продолжаем процесс
-            if (largest != parent) {
-                swap(a[parent], a[largest]);
-                parent = largest;
-            } else {
-                break; // Если текущий узел находится на своем месте в куче, завершаем процесс
-            }
+        if (largest != i) {
+            int temp = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = temp;
+            i = largest;  // Обновляем индекс для проверки дочерних узлов
+        } else {
+            break;  // Если куча уже упорядочена, выходим из цикла
         }
     }
 }
 
-void Array::Hoar_sort(int l, int r) {
+// Функция для пирамидальной сортировки без рекурсии
+void heapSortIterative(int arr[], int n) {
+    // Построение max-кучи
+    for (int i = n / 2 - 1; i >= 0; --i) {
+        buildMaxHeapIterative(arr, n, i);
+    }
+
+    // Поочередное извлечение элементов из кучи
+    for (int i = n - 1; i > 0; --i) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+        buildMaxHeapIterative(arr, i, 0);
+    }
+}
+
+void Array::Heapsort() {
+    heapSortIterative(a, n);
+}
+
+void hoar_sort(int a[], int l, int r) {
 
     if (l >= r)
         return;
@@ -251,21 +234,28 @@ void Array::Hoar_sort(int l, int r) {
         if (i >= j)
             break;
 
-        swap(a[i], a[j]);
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
     }
 
-    Hoar_sort(l, j);
-    Hoar_sort(j + 1, r);
+    hoar_sort(a, l, j);
+    hoar_sort(a, j + 1, r);
 }
 
-void Array::Bit_sort(int l, int r, int k) {
+void Array::Hoar_sort() {
+    int l = 0, r = arrLength() - 1;
+    hoar_sort(a, l, r);
+}
+
+void bit_sort(int a[], int l, int r, int k) {
     if (l >= r || k < 0) {
         return;
     }
 
     int i = l, j = r;
 
-    while (i <= j) {
+    while (i <= j) {//заменить маску
         // Перемещение i до тех пор, пока k-ый бит равен 0
         while (i <= j && ((a[i] >> k) & 1) == 0) {
             i++;
@@ -278,17 +268,23 @@ void Array::Bit_sort(int l, int r, int k) {
 
         // Обмен a[i] и a[j]
         if (i < j) {
-            std::swap(a[i], a[j]);
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
             i++;
             j--;
         }
     }
 
     // Рекурсивная сортировка подмассива [l, j] по (k-1)-ому биту
-    Bit_sort(l, j, k - 1);
+    bit_sort(a, l, j, k - 1);
 
     // Рекурсивная сортировка подмассива [i, r] по (k-1)-ому биту
-    Bit_sort(i, r, k - 1);
+    bit_sort(a, i, r, k - 1);
+}
+
+void Array::Bit_sort() {
+    bit_sort(a, 0, arrLength() - 1, sizeof(int) * 8 - 1);
 }
 
 
@@ -341,7 +337,7 @@ int main() {
     Array smallArrayHoar(smallArrayCopy);
     auto startSmallHoar = chrono::high_resolution_clock::now();
     //cout << smallArrayHoar;
-    smallArrayHoar.Hoar_sort(0, smallArrayHoar.arrLength() - 1);
+    smallArrayHoar.Hoar_sort();
     //cout << smallArrayHoar;
     auto endSmallHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallHoar = endSmallHoar - startSmallHoar;
@@ -351,7 +347,9 @@ int main() {
 
     Array smallArrayBit(smallArrayCopy);
     auto startSmallBit = chrono::high_resolution_clock::now();
-    smallArrayBit.Bit_sort(0, smallArrayBit.arrLength() - 1, sizeof(int) * 8 - 1);
+    //cout << smallArrayBit;
+    smallArrayBit.Bit_sort();
+    //cout << smallArrayBit;
     auto endSmallBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationSmallBit = endSmallBit - startSmallBit;
     cout << "Small array (Bit sort) time: " << durationSmallBit.count() << " milliseconds" << endl;
@@ -359,7 +357,7 @@ int main() {
          << (smallArrayBit == smallArrayCopy) << endl;
 
     // Большой массив
-    Array largeArray(100000, 1, 10000000);
+    Array largeArray(1000000, 1, 10000000);
     Array largeArrayCopy(largeArray);
 
     auto startLargeShell = chrono::high_resolution_clock::now();
@@ -381,7 +379,7 @@ int main() {
 
     Array largeArrayHoar(largeArrayCopy);
     auto startLargeHoar = chrono::high_resolution_clock::now();
-    largeArrayHoar.Hoar_sort(0, largeArrayHoar.arrLength() - 1);
+    largeArrayHoar.Hoar_sort();
     auto endLargeHoar = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeHoar = endLargeHoar - startLargeHoar;
     cout << "Large array (Hoar sort) time: " << durationLargeHoar.count() << " milliseconds" << endl;
@@ -390,7 +388,7 @@ int main() {
 
     Array largeArrayBit(largeArrayCopy);
     auto startLargeBit = chrono::high_resolution_clock::now();
-    largeArrayBit.Bit_sort(0, largeArrayBit.arrLength() - 1, sizeof(int) * 8 - 1);
+    largeArrayBit.Bit_sort();
     auto endLargeBit = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> durationLargeBit = endLargeBit - startLargeBit;
     cout << "Large array (Bit sort) time: " << durationLargeBit.count() << " milliseconds" << endl;
