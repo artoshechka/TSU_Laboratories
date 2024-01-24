@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
-int BITS = sizeof(unsigned int) * 8;
 using namespace std;
+
 
 /// Класс булев вектор
 class BoolV {
@@ -31,11 +31,31 @@ public:
 
     friend istream &operator>>(istream &, BoolV &);
 
-    // Дополнительно (не обязательно)
     int weight(); //вес вектора
     BoolV operator<<(int); //сдвиг на k бит влево
     BoolV operator>>(int); //сдвиг на k бит вправо
+    friend class BoolM;
 };
+
+// Класс булева матрица
+class BoolM {
+    BoolV *bm;
+    int m, n; // m – количество строк, n – количество столбцов
+public:
+    BoolM(int k = 1, int l = 1); // формируется нулевая булева матрица размера kl
+    BoolM(const BoolM &);
+
+    BoolV &operator[](int);
+
+    BoolM operator=(const BoolM &);
+
+    friend ostream &operator<<(ostream &, BoolM &);
+
+    bool topsort(int *a);
+
+    int BuildMatrix();
+};
+
 
 BoolV::BoolV(int nn) {
     nbit = nn;
@@ -46,7 +66,7 @@ BoolV::BoolV(int nn) {
     }
 }
 
-BoolV::BoolV(const char *str) {
+BoolV::BoolV(const char *str) {//оптимизировать через задачу перемнных
     nbit = strlen(str);
     m = (nbit - 1) / 32 + 1;
     v = new unsigned int[m];
@@ -126,7 +146,7 @@ bool BoolV::operator==(const BoolV &other) {
     return true;
 }
 
-BoolV BoolV::operator|(const BoolV &other) {
+BoolV BoolV::operator|(const BoolV &other) {//тернарные исправить на условия для оптимальности
     BoolV temp(nbit > other.nbit ? *this : other);
     for (int i = 0; i < (nbit < other.nbit ? other.m : m); ++i) {
         temp.v[i] |= (nbit < other.nbit ? other.v[i] : v[i]);
@@ -161,10 +181,174 @@ istream &operator>>(istream &in, BoolV &boolV) {
 
 BoolV BoolV::operator~() {
     BoolV temp(*this);
-    for (int i = 0; i < m; ++i) {
-        temp.v[i] = ~temp.v[i];
+    for (int i = 0; i < nbit; ++i) {
+        ((temp.v[i / 32] & (1 << (i % 32))) == 0 ? temp.Set1(i) : temp.Set0(i));
     }
     return temp;
+}
+
+// Реализация метода weight
+int BoolV::weight() {
+    int count = 0;
+    for (int i = 0; i < nbit; ++i) {
+        if (v[i / 32] & (1 << (i % 32))) {
+            count++;
+        }
+    }
+    return count;
+}
+
+// Реализация оператора <<
+BoolV BoolV::operator<<(int k) {
+    BoolV result(*this); // создаем копию текущего вектора
+
+    // Сдвигаем биты влево на k позиций
+    for (int i = 0; i < nbit; ++i) {
+        int newIndex = i + k;
+        if (newIndex < nbit) {
+            ((v[i / 32] & (1 << (i % 32))) ? result.Set1(newIndex) : result.Set0(newIndex));
+        }
+    }
+
+    return result;
+}
+
+// Реализация оператора >>
+BoolV BoolV::operator>>(int k) {
+    BoolV result(*this); // создаем копию текущего вектора
+
+    // Сдвигаем биты вправо на k позиций
+    for (int i = nbit - 1; i >= 0; --i) {
+        int newIndex = i - k;
+        if (newIndex >= 0) {
+            ((v[i / 32] & (1 << (i % 32))) ? result.Set1(newIndex) : result.Set0(newIndex));
+
+        }
+    }
+
+    return result;
+}
+
+// Конструктор для создания нулевой булевой матрицы размера kl
+BoolM::BoolM(int k, int l) {
+    m = k;
+    n = l;
+    bm = new BoolV[m];
+    BoolV bv(n);
+    for (int i = 0; i < m; ++i) {
+        bm[i] = bv;
+    }
+}
+
+// Конструктор копирования
+BoolM::BoolM(const BoolM &other) {
+    m = other.m;
+    n = other.n;
+    bm = new BoolV[m];
+    for (int i = 0; i < m; ++i) {
+        bm[i] = other.bm[i];
+    }
+}
+
+// Перегрузка оператора [] для доступа к строке матрицы
+BoolV &BoolM::operator[](int row) {
+    if (row >= 0 && row < m) {
+        return bm[row];
+    } else {
+        cout << "Invalid row index";
+        // Вернуть ссылку на первую строку в случае ошибки (это можно изменить в зависимости от требований)
+        return bm[0];
+    }
+}
+
+// Перегрузка оператора присваивания для копирования матрицы
+BoolM BoolM::operator=(const BoolM &other) {
+    if (this != &other) {
+        m = other.m;
+        n = other.n;
+        delete[] bm;
+        bm = new BoolV[m];
+        for (int i = 0; i < m; ++i) {
+            bm[i] = other.bm[i];
+        }
+    }
+    return *this;
+}
+
+// Перегрузка оператора вывода для вывода матрицы в поток
+ostream &operator<<(ostream &out, BoolM &boolM) {
+    for (int i = 0; i < boolM.m; ++i) {
+        out << boolM.bm[i] << endl;
+    }
+    return out;
+}
+
+void topsort(BoolM &M, int m, int *a) {
+    BoolV v0(m); // Какие вершины использовали rоторые уже рассмотрели
+    BoolV v1(m); // Вершины в которые нет пути
+    BoolV v2(m); // Ответ на данном шаге цикла while
+    BoolV NullV(m);//вектор с 0 везде
+    int k = 0;
+    for (int i = 0; i < m; i++) {//jтветы заполняем нулями
+        a[i] = 0;
+    }
+    while (v0.weight() != m) {//
+        v1 = NullV;//обноляем на каждом шаге
+        for (int i = 0; i < m; i++) {
+            v1 = v1 | M[i];//находим вершины в которые у нас есть пути
+
+        }
+        v1 = ~v1;// вершины в которые у нас нет пути
+        v2 = v1 & (~v0);//нет пути но мы их не использовались
+        if (v2 == NullV) {//условие для неприминимости топологической сортировки
+            throw invalid_argument("Error Matrix");
+        }
+        for (int i = 0; i < m; i++) { // пробегаем по всему v2
+
+            if (v2[i] == 1) {
+                a[k] = i + 1;//добавляем вершину в массив ответов
+                M[i] = NullV;//удаляем исходящие пути
+                k++;//увеличиваем указатель для массива ответов
+            }
+        }
+
+        v0 = v0 | v2;//добавляем рассмотренные вершины
+
+
+    }
+}
+
+int BoolM::BuildMatrix() {//построение матрицы из файла
+    ifstream fin("graf.txt");
+    if (fin.is_open()) {
+        int a, b;
+        int m;
+        fin >> m;//колличество вершин
+        BoolM BM(m, m);//строим пустую матрицу
+        do {
+            fin >> a;// вершина начала пути
+            fin >> b;//вершина конца пути
+            BM[a - 1].Set1(b - 1);// установка единицы в ячейку матрицы
+        } while (!fin.eof());// пока можем считать с файла
+        fin.close();
+        *this = BM;
+        return m;//возвращаем колличество вершин
+    }
+    return 0;
+}
+
+void matrix() {//матрица+ответ сортировки
+    BoolM a;
+    int m;
+    m = a.BuildMatrix();
+    int *b = new int[m];//массив ответов
+    cout << a;//выводим матрицу
+    topsort(a, m, b);//производим топологическую сортировку
+    printf("Otvet: ");
+    for (int i = 0; i < m - 1; i++) {//выводим массив ответов
+        cout << b[i] << ", ";
+    }
+    cout << b[m - 1] << endl;
 }
 
 int main() {
@@ -196,10 +380,41 @@ int main() {
     } else {
         cout << "bv1 is not equal to bv6" << endl;
     }
+    // Пример использования метода weight для вектора
+    cout << "Weight of bv1: " << bv1.weight() << endl;
 
+    // Пример использования операторов << и >> для вектора
+    int shiftAmount;
+    cout << "Enter shift amount for bv1 to the left:";
+    cin >> shiftAmount;
+    BoolV bvLeftShifted = bv1 << shiftAmount;
+    cout << "bv1 after left shift by " << shiftAmount << " bits: " << bvLeftShifted << endl;
+
+    cout << "Enter shift amount for bv1 to the right:";
+    cin >> shiftAmount;
+    BoolV bvRightShifted = bv1 >> shiftAmount;
+    cout << "bv1 after right shift by " << shiftAmount << " bits: " << bvRightShifted << endl;
     cout << "Enter a binary string:";
     cin >> bv6; // Ввод булевого вектора с клавиатуры
-    cout << "You entered: " << bv6 << endl;
+    cout << "You entered: " << bv6 << endl << endl;
+
+    // Пример использования булевой матрицы
+    BoolM matrix1(3, 4); // Создание булевой матрицы 3x4
+
+    // Установка значений в матрице
+    matrix1[0].Set1(1);
+    matrix1[1].Set1(2);
+    matrix1[2].Set1(3);
+
+    cout << "Matrix1:" << endl;
+    cout << matrix1 << endl; // Вывод матрицы на экран
+
+    BoolM matrix2 = matrix1; // Копирование матрицы
+
+    cout << "Matrix2 (copied from Matrix1):" << endl;
+    cout << matrix2 << endl; // Вывод скопированной матрицы
+    matrix();
 
     return 0;
 }
+

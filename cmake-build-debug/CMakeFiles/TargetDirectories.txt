@@ -1,0 +1,3 @@
+C:/Users/artem/OneDrive/Рабочий стол/Всякая вузовская шняга/Laboratory work on programming/2.2 C++/cmake-build-debug/CMakeFiles/2_2_C__.dir
+C:/Users/artem/OneDrive/Рабочий стол/Всякая вузовская шняга/Laboratory work on programming/2.2 C++/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/artem/OneDrive/Рабочий стол/Всякая вузовская шняга/Laboratory work on programming/2.2 C++/cmake-build-debug/CMakeFiles/rebuild_cache.dir

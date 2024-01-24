@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "2_2_C__",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "2_2_C__::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-2_2_C__-Debug-07141650ccb8bcfe6c1e.json",
+					"name" : "2_2_C__",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/artem/OneDrive/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/\u0412\u0441\u044f\u043a\u0430\u044f \u0432\u0443\u0437\u043e\u0432\u0441\u043a\u0430\u044f \u0448\u043d\u044f\u0433\u0430/Laboratory work on programming/2.2 C++/cmake-build-debug",
+		"source" : "C:/Users/artem/OneDrive/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/\u0412\u0441\u044f\u043a\u0430\u044f \u0432\u0443\u0437\u043e\u0432\u0441\u043a\u0430\u044f \u0448\u043d\u044f\u0433\u0430/Laboratory work on programming/2.2 C++"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
