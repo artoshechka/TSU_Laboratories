@@ -1,0 +1,4 @@
+"D:\CLion 2023.1.3\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=D:/CLion 2023.1.3/bin/ninja/win/x64/ninja.exe" -G Ninja -S "C:\Users\artem\OneDrive\Рабочий стол\Всякая вузовская шняга\Laboratory work on programming\2.2 C++" -B "C:\Users\artem\OneDrive\Рабочий стол\Всякая вузовская шняга\Laboratory work on programming\2.2 C++\cmake-build-debug"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/artem/OneDrive/Рабочий стол/Всякая вузовская шняга/Laboratory work on programming/2.2 C++/cmake-build-debug
