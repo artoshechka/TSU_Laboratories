@@ -1,0 +1,15 @@
+C:\Users\artem\source\2.2-C#\Array_1\bin\Debug\net8.0\Array_1.exe
+C:\Users\artem\source\2.2-C#\Array_1\bin\Debug\net8.0\Array_1.deps.json
+C:\Users\artem\source\2.2-C#\Array_1\bin\Debug\net8.0\Array_1.runtimeconfig.json
+C:\Users\artem\source\2.2-C#\Array_1\bin\Debug\net8.0\Array_1.dll
+C:\Users\artem\source\2.2-C#\Array_1\bin\Debug\net8.0\Array_1.pdb
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.AssemblyInfoInputs.cache
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.AssemblyInfo.cs
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.csproj.CoreCompileInputs.cache
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.sourcelink.json
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.dll
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\refint\Array_1.dll
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.pdb
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\Array_1.genruntimeconfig.cache
+C:\Users\artem\source\2.2-C#\Array_1\obj\Debug\net8.0\ref\Array_1.dll
