@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cpp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A6E687CA-6EFE-48E5-AB3E-F7D7AE503E9D}|2.2-Cpp.vcxproj|C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cpp\\2.2-Cpp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A6E687CA-6EFE-48E5-AB3E-F7D7AE503E9D}|2.2-Cpp.vcxproj|solutionrelative:2.2-Cpp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "2.2-Cpp.cpp",
+              "DocumentMoniker": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cpp\\2.2-Cpp.cpp",
+              "RelativeDocumentMoniker": "2.2-Cpp.cpp",
+              "ToolTip": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cpp\\2.2-Cpp.cpp*",
+              "RelativeToolTip": "2.2-Cpp.cpp*",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-19T17:00:19.227Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
