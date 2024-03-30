@@ -3,7 +3,9 @@
         "iosfwd": "cpp",
         "vector": "cpp",
         "queue": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "ostream": "cpp",
+        "xstring": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
