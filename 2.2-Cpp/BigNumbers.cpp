@@ -1,68 +1,200 @@
+#include <cstring>
+#include <ctime>
 #include <iostream>
+#include <stdexcept>
+
+using namespace std;
 
 typedef unsigned short BASE;
 #define BASE_SIZE (sizeof(BASE) * 8)
 
-using namespace std;
 class bigNumber {
    private:
-    BASE *coef;
-    int lenght;
-    int maxLenght;
+    BASE *coefficients;  // коэффиценты
+    int length;          // фактическая длина
+    int maxLength;       // максимально возможная длина
 
    public:
-    bigNumber(int maxLen = 1, int number = 0);
+    // конструктор
+    bigNumber(int maxLen = 1, int parameter = 0);
+
+    // конструктор копирования
     bigNumber(const bigNumber &);
-    ~bigNumber() {
-        if (coef) {
-            delete[] coef;
-            coef = nullptr;
-        }
-    };
-    bigNumber operator=(const bigNumber &);
+
+    // деструктор
+    ~bigNumber();
+
+    // перегрузка сравнений
+    bool operator==(const bigNumber &);
+    bool operator!=(const bigNumber &);
+    bool operator<(const bigNumber &);
+    bool operator>(const bigNumber &);
+    bool operator<=(const bigNumber &);
+    bool operator>=(const bigNumber &);
+
+    // перегрузка операций
+    bigNumber &operator=(const bigNumber &);
+
+    // 16ричный ввод и вывод
+    friend ostream &operator<<(ostream &, const bigNumber &);
+    friend istream &operator>>(istream &, bigNumber &);
 };
 
-bigNumber::bigNumber(int maxLen, int number) {
-    coef = new BASE[maxLen];
-    int size = BASE_SIZE;
-    int len = maxLen;
-    int maxLen = maxLen;
-    for (int i = 0; i < maxLenght; ++i) {
-        coef[i] = 0;
-    }
-    if (number != 0) {
+bigNumber::bigNumber(int maxLen, int parameter) : length(maxLen), maxLength(maxLen) {
+    coefficients = new BASE[maxLen]();
+
+    if (parameter != 0) {
         for (int i = 0; i < maxLen; ++i) {
-            coef[i] = rand();
-            if (size > 12) {
-                for (int j = 0; j < ceil(size / 12); ++j) {
-                    coef[i] <<= ((j * 12) | rand());
-                }
-            }
+            coefficients[i] = rand();
         }
-        while (len > 1 && coef[len - 1] == 0) {
-            --len;
-        }
+    }
+
+    while (length > 1 && coefficients[length - 1] == 0) {
+        --length;
     }
 }
 
-bigNumber::bigNumber(const bigNumber &other) {
-    maxLenght = other.maxLenght;
-    lenght = other.lenght;
-    coef = new BASE[maxLenght];
-    for (int i = 0; i < maxLenght; ++i) {
-        coef[i] = other.coef[i];
+bigNumber::bigNumber(const bigNumber &other) : length(other.length), maxLength(other.maxLength) {
+    coefficients = new BASE[maxLength];
+    for (int i = 0; i < maxLength; ++i) {
+        coefficients[i] = other.coefficients[i];
     }
 }
 
-bigNumber bigNumber::operator=(const bigNumber &other) {
+bigNumber::~bigNumber() { delete[] coefficients; }
+
+bigNumber &bigNumber::operator=(const bigNumber &other) {
     if (this != &other) {
-        delete[] coef;
-        maxLenght = other.maxLenght;
-        lenght = other.lenght;
-        coef = new BASE[maxLenght];
-        for (int i = 0; i < maxLenght; ++i) {
-            coef[i] = other.coef[i];
+        delete[] coefficients;
+        maxLength = other.maxLength;
+        length = other.length;
+        coefficients = new BASE[maxLength];
+        for (int i = 0; i < maxLength; ++i) {
+            coefficients[i] = other.coefficients[i];
         }
     }
     return *this;
+}
+
+ostream &operator<<(ostream &out, const bigNumber &bigNum) {
+    for (int i = bigNum.length - 1; i >= 0; --i) {
+        out << hex << bigNum.coefficients[i] << " ";
+    }
+    return out;
+}
+
+istream &operator>>(istream &in, bigNumber &bigNum) {
+    char *inputString = new char[1000];
+    in.getline(inputString, 1000);
+
+    int k = 0, j = 0;
+    for (int i = strlen(inputString) - 1; i >= 0; --i) {
+        unsigned int temp = 0;
+        if ('0' <= inputString[i] && inputString[i] <= '9') {
+            temp = inputString[i] - '0';
+        } else if ('a' <= inputString[i] && inputString[i] <= 'f') {
+            temp = inputString[i] - 'a' + 10;
+        } else if ('A' <= inputString[i] && inputString[i] <= 'F') {
+            temp = inputString[i] - 'A' + 10;
+        } else {
+            throw invalid_argument("Invalid arguments.");
+        }
+
+        bigNum.coefficients[j] |= temp << (k * 4);
+        k++;
+        if (k >= BASE_SIZE / 4) {
+            k = 0;
+            j++;
+        }
+    }
+    delete[] inputString;
+    return in;
+}
+
+bool bigNumber::operator==(const bigNumber &other) {
+    if (length != other.length) {
+        return false;
+    }
+    for (int i = 0; i < length; ++i) {
+        if (coefficients[i] != other.coefficients[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool bigNumber::operator!=(const bigNumber &other) {
+    return !(*this == other);
+}
+
+bool bigNumber::operator<(const bigNumber &other) {
+    if (length < other.length) {
+        return true;
+    } else if (length > other.length) {
+        return false;
+    }
+    for (int i = length - 1; i >= 0; --i) {
+        if (coefficients[i] < other.coefficients[i]) {
+            return true;
+        } else if (coefficients[i] > other.coefficients[i]) {
+            return false;
+        }
+    }
+    return false;
+}
+
+bool bigNumber::operator>(const bigNumber &other) {
+    if (length > other.length) {
+        return true;
+    } else if (length < other.length) {
+        return false;
+    }
+    for (int i = length - 1; i >= 0; --i) {
+        if (coefficients[i] > other.coefficients[i]) {
+            return true;
+        } else if (coefficients[i] < other.coefficients[i]) {
+            return false;
+        }
+    }
+    return false;
+}
+
+bool bigNumber::operator<=(const bigNumber &other) {
+    return (*this < other) || (*this == other);
+}
+
+bool bigNumber::operator>=(const bigNumber &other) {
+    return (*this > other) || (*this == other);
+}
+
+int main() {
+    srand(time(NULL));
+
+    bigNumber numA(1, 1);
+    bigNumber numB;
+    cout << "Enter a big number in hexadecimal format: ";
+    cin >> numB;
+
+    cout << "A: " << numA << endl;
+    cout << "B: " << numB << endl;
+
+    if (numA == numB) {
+        cout << "A is equal to B" << endl;
+    } else {
+        cout << "A is not equal to B" << endl;
+    }
+
+    if (numA < numB) {
+        cout << "A is less than B" << endl;
+    } else {
+        cout << "A is not less than B" << endl;
+    }
+
+    if (numA > numB) {
+        cout << "A is greater than B" << endl;
+    } else {
+        cout << "A is not greater than B" << endl;
+    }
+
+    return 0;
 }
