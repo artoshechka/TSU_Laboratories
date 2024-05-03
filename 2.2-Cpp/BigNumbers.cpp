@@ -124,7 +124,15 @@ bool bigNumber::operator==(const bigNumber &other) {
 }
 
 bool bigNumber::operator!=(const bigNumber &other) {
-    return !(*this == other);
+    if (length == other.length) {
+        return false;
+    }
+    for (int i = 0; i < length; ++i) {
+        if (coefficients[i] = other.coefficients[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool bigNumber::operator<(const bigNumber &other) {
@@ -160,11 +168,32 @@ bool bigNumber::operator>(const bigNumber &other) {
 }
 
 bool bigNumber::operator<=(const bigNumber &other) {
-    return (*this < other) || (*this == other);
+    if (length>other.length){
+        return false;
+    }
+    for (int i = length - 1; i >= 0; --i) {
+        if (coefficients[i] <= other.coefficients[i]) {
+            return true;
+        } else if (coefficients[i] > other.coefficients[i]) {
+            return false;
+        }
+    }
+    return false;
+
 }
 
 bool bigNumber::operator>=(const bigNumber &other) {
-    return (*this > other) || (*this == other);
+    if (length<other.length){
+        return false;
+    }
+    for (int i = length - 1; i >= 0; --i) {
+        if (coefficients[i] >= other.coefficients[i]) {
+            return true;
+        } else if (coefficients[i] < other.coefficients[i]) {
+            return false;
+        }
+    }
+    return false;
 }
 
 int main() {
