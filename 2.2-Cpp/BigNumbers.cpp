@@ -36,8 +36,8 @@ class bigNumber {
     bigNumber &operator=(const bigNumber &);
 
     // 16ричный ввод и вывод
-    friend ostream &operator<<(ostream &, const bigNumber &);
-    friend istream &operator>>(istream &, bigNumber &);
+    void printHex() const;
+    void readHex();
 };
 
 bigNumber::bigNumber(int maxLen, int parameter) : length(maxLen), maxLength(maxLen) {
@@ -76,16 +76,15 @@ bigNumber &bigNumber::operator=(const bigNumber &other) {
     return *this;
 }
 
-ostream &operator<<(ostream &out, const bigNumber &bigNum) {
-    for (int i = bigNum.length - 1; i >= 0; --i) {
-        out << hex << bigNum.coefficients[i] << " ";
+void bigNumber::printHex() const {
+    for (int i = length - 1; i >= 0; --i) {
+        cout << hex << coefficients[i] << " ";
     }
-    return out;
 }
 
-istream &operator>>(istream &in, bigNumber &bigNum) {
+void bigNumber::readHex() {
     char *inputString = new char[1000];
-    in.getline(inputString, 1000);
+    cin.getline(inputString, 1000);
 
     int k = 0, j = 0;
     for (int i = strlen(inputString) - 1; i >= 0; --i) {
@@ -100,7 +99,7 @@ istream &operator>>(istream &in, bigNumber &bigNum) {
             throw invalid_argument("Invalid arguments.");
         }
 
-        bigNum.coefficients[j] |= temp << (k * 4);
+        coefficients[j] |= temp << (k * 4);
         k++;
         if (k >= BASE_SIZE / 4) {
             k = 0;
@@ -108,7 +107,6 @@ istream &operator>>(istream &in, bigNumber &bigNum) {
         }
     }
     delete[] inputString;
-    return in;
 }
 
 bool bigNumber::operator==(const bigNumber &other) {
@@ -168,7 +166,7 @@ bool bigNumber::operator>(const bigNumber &other) {
 }
 
 bool bigNumber::operator<=(const bigNumber &other) {
-    if (length>other.length){
+    if (length > other.length) {
         return false;
     }
     for (int i = length - 1; i >= 0; --i) {
@@ -179,11 +177,10 @@ bool bigNumber::operator<=(const bigNumber &other) {
         }
     }
     return false;
-
 }
 
 bool bigNumber::operator>=(const bigNumber &other) {
-    if (length<other.length){
+    if (length < other.length) {
         return false;
     }
     for (int i = length - 1; i >= 0; --i) {
@@ -202,10 +199,14 @@ int main() {
     bigNumber numA(1, 1);
     bigNumber numB;
     cout << "Enter a big number in hexadecimal format: ";
-    cin >> numB;
+    numB.readHex();
 
-    cout << "A: " << numA << endl;
-    cout << "B: " << numB << endl;
+    cout << "A: ";
+    numA.printHex();
+    cout << endl
+         << "B: ";
+    numB.printHex();
+    cout << endl;
 
     if (numA == numB) {
         cout << "A is equal to B" << endl;
