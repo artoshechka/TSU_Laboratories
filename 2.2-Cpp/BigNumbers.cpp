@@ -26,12 +26,12 @@ class bigNumber {
     ~bigNumber();
 
     // перегрузка сравнений
-    bool operator==(const bigNumber &);
-    bool operator!=(const bigNumber &);
-    bool operator<(const bigNumber &);
-    bool operator>(const bigNumber &);
-    bool operator<=(const bigNumber &);
-    bool operator>=(const bigNumber &);
+    bool operator==(const bigNumber &) const;
+    bool operator!=(const bigNumber &) const;
+    bool operator<(const bigNumber &) const;
+    bool operator>(const bigNumber &) const;
+    bool operator<=(const bigNumber &) const;
+    bool operator>=(const bigNumber &) const;
 
     // перегрузка операций
     bigNumber &operator=(const bigNumber &);
@@ -39,6 +39,10 @@ class bigNumber {
     // 16ричный ввод и вывод
     void printHex() const;
     void readHex();
+
+    // перегрузка сложения
+    bigNumber operator+(const bigNumber &) const;
+    bigNumber &operator+=(const bigNumber &);
 };
 
 bigNumber::bigNumber(int maxLen, int parameter) : length(maxLen), maxLength(maxLen) {
@@ -79,7 +83,7 @@ bigNumber &bigNumber::operator=(const bigNumber &other) {
 
 void bigNumber::printHex() const {
     for (int i = length - 1; i >= 0; --i) {
-        cout << coefficients[i] << " ";
+        cout << hex << coefficients[i] << " ";
     }
 }
 
@@ -109,7 +113,45 @@ void bigNumber::readHex() {
     }
 }
 
-bool bigNumber::operator==(const bigNumber &other) {
+bigNumber bigNumber::operator+(const bigNumber &other) const {
+    int maxLen = max(length, other.length) + 1;  // Максимальная длина для результата
+    bigNumber result(maxLen, 0);                 // Создаем объект для результата
+
+    int carry = 0;  // Перенос разряда
+    for (int i = 0; i < maxLen; ++i) {
+        int sum = coefficients[i] + other.coefficients[i] + carry;  // Сумма текущих разрядов и переноса
+        result.coefficients[i] = sum & ((1 << BASE_SIZE) - 1);      // Сохраняем только младшие BASE_SIZE бит суммы
+        carry = sum >> BASE_SIZE;                                   // Определяем новый перенос
+    }
+
+    // Убираем ведущие нули, если они есть
+    while (result.length > 1 && result.coefficients[result.length - 1] == 0) {
+        --result.length;
+    }
+
+    return result;
+}
+
+bigNumber &bigNumber::operator+=(const bigNumber &other) {
+    int maxLen = max(length, other.length) + 1;  // Максимальная длина для результата
+    int carry = 0;                               // Перенос разряда
+
+    // Выполняем сложение, учитывая перенос
+    for (int i = 0; i < maxLen; ++i) {
+        int sum = coefficients[i] + other.coefficients[i] + carry;  // Сумма текущих разрядов и переноса
+        coefficients[i] = sum & ((1 << BASE_SIZE) - 1);             // Сохраняем только младшие BASE_SIZE бит суммы
+        carry = sum >> BASE_SIZE;                                   // Определяем новый перенос
+    }
+
+    // Убираем ведущие нули, если они есть
+    while (length > 1 && coefficients[length - 1] == 0) {
+        --length;
+    }
+
+    return *this;  // Возвращаем ссылку на текущий объект для поддержки цепочечных вызовов
+}
+
+bool bigNumber::operator==(const bigNumber &other) const {
     if (length != other.length) {
         return false;
     }
@@ -121,7 +163,7 @@ bool bigNumber::operator==(const bigNumber &other) {
     return true;
 }
 
-bool bigNumber::operator!=(const bigNumber &other) {
+bool bigNumber::operator!=(const bigNumber &other) const {
     if (length == other.length) {
         return false;
     }
@@ -133,7 +175,7 @@ bool bigNumber::operator!=(const bigNumber &other) {
     return true;
 }
 
-bool bigNumber::operator<(const bigNumber &other) {
+bool bigNumber::operator<(const bigNumber &other) const {
     if (length < other.length) {
         return true;
     } else if (length > other.length) {
@@ -149,7 +191,7 @@ bool bigNumber::operator<(const bigNumber &other) {
     return false;
 }
 
-bool bigNumber::operator>(const bigNumber &other) {
+bool bigNumber::operator>(const bigNumber &other) const {
     if (length > other.length) {
         return true;
     } else if (length < other.length) {
@@ -165,7 +207,7 @@ bool bigNumber::operator>(const bigNumber &other) {
     return false;
 }
 
-bool bigNumber::operator<=(const bigNumber &other) {
+bool bigNumber::operator<=(const bigNumber &other) const {
     if (length > other.length) {
         return false;
     }
@@ -179,7 +221,7 @@ bool bigNumber::operator<=(const bigNumber &other) {
     return false;
 }
 
-bool bigNumber::operator>=(const bigNumber &other) {
+bool bigNumber::operator>=(const bigNumber &other) const {
     if (length < other.length) {
         return false;
     }
@@ -198,6 +240,7 @@ int main() {
 
     bigNumber numA(1, 1);
     bigNumber numB;
+
     cout << "Enter a big number in hexadecimal format: ";
     numB.readHex();
 
@@ -225,6 +268,9 @@ int main() {
     } else {
         cout << "A is not greater than B" << endl;
     }
+
+    numA += numB;
+    numA.printHex();
 
     return 0;
 }
