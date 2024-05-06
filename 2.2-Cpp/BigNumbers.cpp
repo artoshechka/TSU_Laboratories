@@ -43,6 +43,10 @@ class bigNumber {
     // перегрузка сложения
     bigNumber operator+(const bigNumber &) const;
     bigNumber &operator+=(const bigNumber &);
+
+    // перегрузка вычитания
+    bigNumber operator-(const bigNumber &) const;
+    bigNumber &operator-=(const bigNumber &);
 };
 
 bigNumber::bigNumber(int maxLen, int parameter) : length(maxLen), maxLength(maxLen) {
@@ -82,7 +86,9 @@ bigNumber &bigNumber::operator=(const bigNumber &other) {
 }
 
 void bigNumber::printHex() const {
-    for (int i = length - 1; i >= 0; --i) {
+    for (int i = length - 1; i >= 0; i--) {
+        cout.width(BASE_SIZE / 4);
+        cout.fill('0');
         cout << hex << coefficients[i] << " ";
     }
 }
@@ -90,9 +96,16 @@ void bigNumber::printHex() const {
 void bigNumber::readHex() {
     string inputString;
     getline(cin, inputString);
-
+    int inputStringLength = inputString.length() - 1;
     int k = 0, j = 0;
-    for (int i = inputString.length() - 1; i >= 0; --i) {
+    length = inputStringLength / (BASE_SIZE / 4) + 1;
+    maxLength = length;
+    coefficients = new BASE[length];
+    for (int i = 0; i < length; ++i) {
+        coefficients[i] = 0;
+    }
+
+    for (int i = inputStringLength; i >= 0; --i) {
         unsigned int temp = 0;
         if ('0' <= inputString[i] && inputString[i] <= '9') {
             temp = inputString[i] - '0';
@@ -104,9 +117,9 @@ void bigNumber::readHex() {
             throw invalid_argument("Invalid arguments.");
         }
 
-        coefficients[j] |= temp << (k * 4);
-        k++;
-        if (k >= BASE_SIZE / 4) {
+        coefficients[j] |= temp << k;
+        k += 4;
+        if (k >= BASE_SIZE) {
             k = 0;
             j++;
         }
@@ -164,27 +177,29 @@ bool bigNumber::operator==(const bigNumber &other) const {
 }
 
 bool bigNumber::operator!=(const bigNumber &other) const {
-    if (length == other.length) {
-        return false;
+    if (length != other.length) {
+        return true;
     }
     for (int i = 0; i < length; ++i) {
-        if (coefficients[i] == other.coefficients[i]) {
-            return false;
+        if (coefficients[i] != other.coefficients[i]) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool bigNumber::operator<(const bigNumber &other) const {
     if (length < other.length) {
         return true;
-    } else if (length > other.length) {
+    }
+    if (length > other.length) {
         return false;
     }
     for (int i = length - 1; i >= 0; --i) {
         if (coefficients[i] < other.coefficients[i]) {
             return true;
-        } else if (coefficients[i] > other.coefficients[i]) {
+        }
+        if (coefficients[i] > other.coefficients[i]) {
             return false;
         }
     }
@@ -194,13 +209,16 @@ bool bigNumber::operator<(const bigNumber &other) const {
 bool bigNumber::operator>(const bigNumber &other) const {
     if (length > other.length) {
         return true;
-    } else if (length < other.length) {
+    }
+
+    if (length < other.length) {
         return false;
     }
     for (int i = length - 1; i >= 0; --i) {
         if (coefficients[i] > other.coefficients[i]) {
             return true;
-        } else if (coefficients[i] < other.coefficients[i]) {
+        }
+        if (coefficients[i] < other.coefficients[i]) {
             return false;
         }
     }
@@ -211,34 +229,42 @@ bool bigNumber::operator<=(const bigNumber &other) const {
     if (length > other.length) {
         return false;
     }
+    if (length < other.length) {
+        return true;
+    }
     for (int i = length - 1; i >= 0; --i) {
-        if (coefficients[i] <= other.coefficients[i]) {
+        if (coefficients[i] < other.coefficients[i]) {
             return true;
-        } else if (coefficients[i] > other.coefficients[i]) {
+        }
+        if (coefficients[i] > other.coefficients[i]) {
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 bool bigNumber::operator>=(const bigNumber &other) const {
     if (length < other.length) {
         return false;
     }
+    if (length > other.length) {
+        return true;
+    }
     for (int i = length - 1; i >= 0; --i) {
-        if (coefficients[i] >= other.coefficients[i]) {
+        if (coefficients[i] > other.coefficients[i]) {
             return true;
-        } else if (coefficients[i] < other.coefficients[i]) {
+        }
+        if (coefficients[i] < other.coefficients[i]) {
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 int main() {
     srand(time(NULL));
 
-    bigNumber numA(1, 1);
+    bigNumber numA(3, 3);
     bigNumber numB;
 
     cout << "Enter a big number in hexadecimal format: ";
