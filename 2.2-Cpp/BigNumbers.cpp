@@ -2,6 +2,7 @@
 #include <ctime>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ typedef unsigned short BASE;
 
 class bigNumber {
    private:
-    BASE *coefficients;  // коэффиценты
+    BASE *coefficients;  // коэффициенты
     int length;          // фактическая длина
     int maxLength;       // максимально возможная длина
 
@@ -78,16 +79,16 @@ bigNumber &bigNumber::operator=(const bigNumber &other) {
 
 void bigNumber::printHex() const {
     for (int i = length - 1; i >= 0; --i) {
-        cout << hex << coefficients[i] << " ";
+        cout << coefficients[i] << " ";
     }
 }
 
 void bigNumber::readHex() {
-    char *inputString = new char[1000];
-    cin.getline(inputString, 1000);
+    string inputString;
+    getline(cin, inputString);
 
     int k = 0, j = 0;
-    for (int i = strlen(inputString) - 1; i >= 0; --i) {
+    for (int i = inputString.length() - 1; i >= 0; --i) {
         unsigned int temp = 0;
         if ('0' <= inputString[i] && inputString[i] <= '9') {
             temp = inputString[i] - '0';
@@ -106,7 +107,6 @@ void bigNumber::readHex() {
             j++;
         }
     }
-    delete[] inputString;
 }
 
 bool bigNumber::operator==(const bigNumber &other) {
@@ -126,7 +126,7 @@ bool bigNumber::operator!=(const bigNumber &other) {
         return false;
     }
     for (int i = 0; i < length; ++i) {
-        if (coefficients[i] = other.coefficients[i]) {
+        if (coefficients[i] == other.coefficients[i]) {
             return false;
         }
     }
