@@ -27,14 +27,15 @@ internal class Program
                 (arrayEntered[i] < 0 && arrayEntered[i - 1] < 0))
             {
                 count++;
-                if (count > maxCount)
-                {
-                    maxCount = count;
-                    startIndex = i - maxCount + 1;
-                }
+
             }
             else
             {
+                if (count > maxCount)
+                {
+                    maxCount = count;
+                    startIndex = i - maxCount;
+                }
                 count = 1;
             }
         }

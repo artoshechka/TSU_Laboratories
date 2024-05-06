@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\artem\\source\\2.2-C#\\Array_2\\Array_2.csproj": {}
+    "C:\\Users\\artem\\OneDrive\\Рабочий стол\\TSU_labs\\2.2-Cs\\Array_2\\Array_2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\artem\\source\\2.2-C#\\Array_2\\Array_2.csproj": {
+    "C:\\Users\\artem\\OneDrive\\Рабочий стол\\TSU_labs\\2.2-Cs\\Array_2\\Array_2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\artem\\source\\2.2-C#\\Array_2\\Array_2.csproj",
+        "projectUniqueName": "C:\\Users\\artem\\OneDrive\\Рабочий стол\\TSU_labs\\2.2-Cs\\Array_2\\Array_2.csproj",
         "projectName": "Array_2",
-        "projectPath": "C:\\Users\\artem\\source\\2.2-C#\\Array_2\\Array_2.csproj",
+        "projectPath": "C:\\Users\\artem\\OneDrive\\Рабочий стол\\TSU_labs\\2.2-Cs\\Array_2\\Array_2.csproj",
         "packagesPath": "C:\\Users\\artem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\artem\\source\\2.2-C#\\Array_2\\obj\\",
+        "outputPath": "C:\\Users\\artem\\OneDrive\\Рабочий стол\\TSU_labs\\2.2-Cs\\Array_2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\artem\\AppData\\Roaming\\NuGet\\NuGet.Config",
