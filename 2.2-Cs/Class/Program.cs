@@ -20,6 +20,7 @@ class Rectangle
         sideB = b;
     }
 
+    // Метод для ввода данных о прямоугольнике с клавиатуры
     public void Input()
     {
         Console.WriteLine("Введите координаты точки A:");
@@ -30,65 +31,57 @@ class Rectangle
         sideB = double.Parse(Console.ReadLine());
     }
 
+    // Метод для вывода данных о прямоугольнике в консоль
     public void Output()
     {
         Console.WriteLine($"Прямоугольник с координатами точки A ({a.X}, {a.Y}), длиной стороны a = {sideA}, и длиной стороны b = {sideB}");
     }
 
+    // Метод для вычисления площади прямоугольника
     public double Area()
     {
         return sideA * sideB;
     }
 
+    // Метод для вычисления радиуса описанной окружности вокруг прямоугольника
     public double CircumcircleRadius()
     {
         return Math.Sqrt(Math.Pow(sideA, 2) + Math.Pow(sideB, 2)) / 2;
     }
 
+    // Метод для определения, является ли прямоугольник квадратом
     public bool IsSquare()
     {
         return sideA == sideB;
     }
 
+    // Метод для умножения размеров прямоугольника на заданный коэффициент
     public Rectangle Multiply(double factor)
     {
         return new Rectangle(a, sideA * factor, sideB * factor);
     }
 
+    // Метод для сравнения двух прямоугольников
     public bool Equals(Rectangle other)
     {
         return (a.Equals(other.a) && sideA == other.sideA && sideB == other.sideB) ||
                (a.Equals(new Point(other.a.X + other.sideA, other.a.Y)) && sideA == other.sideB && sideB == other.sideA);
     }
 
+    // Метод для проверки, находится ли прямоугольник в первой четверти координатной плоскости
     public bool IsInFirstQuadrant()
     {
         return a.X >= 0 && a.Y >= 0;
     }
 
+    // Метод для проверки пересечения двух прямоугольников
     public bool Intersects(Rectangle other)
     {
         return (a.X < other.a.X + other.sideA && a.X + sideA > other.a.X &&
                 a.Y < other.a.Y + other.sideB && a.Y + sideB > other.a.Y);
     }
 
-    public bool IntersectsLine(double slope, double intercept)
-    {
-        double yTop = a.Y + sideB;
-        double xRight = a.X + sideA;
-
-        double yLeft = slope * a.X + intercept;
-        double yRight = slope * xRight + intercept;
-        double xTop = (yTop - intercept) / slope;
-        double xBottom = (a.Y - intercept) / slope;
-
-        return (a.Y <= yLeft && yLeft <= yTop) || // Левая сторона
-               (a.Y <= yRight && yRight <= yTop) || // Правая сторона
-               (a.X <= xTop && xTop <= xRight) || // Верхняя сторона
-               (a.X <= xBottom && xBottom <= xRight); // Нижняя сторона
-    }
-
-    // Отображение прямоугольника с помощью символов в консоли
+    // Отображение прямоугольника в консоли
     public void Draw()
     {
         int width = (int)Math.Round(sideA);
@@ -98,16 +91,9 @@ class Rectangle
         {
             for (int j = 0; j < width; j++)
             {
-                if ((i == 0 && j == 0) || // Левый верхний угол
-                    (i == 0 && j == width - 1) || // Правый верхний угол
-                    (i == height - 1 && j == 0) || // Левый нижний угол
-                    (i == height - 1 && j == width - 1)) // Правый нижний угол
+                if (i == 0 || i == height - 1 || j == 0 || j == width - 1)
                 {
                     Console.Write("+");
-                }
-                else if (i == 0 || i == height - 1 || j == 0 || j == width - 1)
-                {
-                    Console.Write("*");
                 }
                 else
                 {
@@ -118,8 +104,8 @@ class Rectangle
         }
     }
 
-    // Отображение прямоугольника с учётом пересечения с другим прямоугольником
-    public void Draw(Rectangle other)
+    // Отображение пересечения двух прямоугольников в консоли
+    public void DrawIntersection(Rectangle other)
     {
         int width = (int)Math.Round(Math.Max(sideA, other.sideA));
         int height = (int)Math.Round(Math.Max(sideB, other.sideB));
@@ -134,10 +120,6 @@ class Rectangle
                     (i == height - 1 && j == width - 1)) // Правый нижний угол
                 {
                     Console.Write("+");
-                }
-                else if (i == 0 || i == height - 1 || j == 0 || j == width - 1)
-                {
-                    Console.Write("*");
                 }
                 else if ((i >= a.Y && i <= a.Y + sideB && j >= a.X && j <= a.X + sideA) && // Принадлежит текущему прямоугольнику
                          (i >= other.a.Y && i <= other.a.Y + other.sideB && j >= other.a.X && j <= other.a.X + other.sideA)) // Принадлежит другому прямоугольнику
@@ -173,10 +155,18 @@ class Point
 
     public void Input()
     {
-        Console.Write("X: ");
-        X = double.Parse(Console.ReadLine());
-        Console.Write("Y: ");
-        Y = double.Parse(Console.ReadLine());
+        try
+        {
+            Console.Write("X: ");
+            X = double.Parse(Console.ReadLine());
+            Console.Write("Y: ");
+            Y = double.Parse(Console.ReadLine());
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Неверный формат ввода. Пожалуйста, введите числовое значение.");
+            Input();
+        }
     }
 
     public void Output()
@@ -211,7 +201,8 @@ class Program
         Console.WriteLine("Прямоугольник 1:");
         rectangle1.Output();
         Console.WriteLine("Площадь: " + rectangle1.Area());
-        Console.WriteLine("Радиус описанной окружности: " + rectangle1.CircumcircleRadius());
+        Console.WriteLine("Радиус описанной окружности:");
+        Console.WriteLine(rectangle1.CircumcircleRadius());
         Console.WriteLine("Квадрат? " + rectangle1.IsSquare());
         Console.WriteLine("Прямоугольник полностью в первой четверти? " + rectangle1.IsInFirstQuadrant());
         Console.WriteLine("Отображение прямоугольника:");
@@ -221,7 +212,6 @@ class Program
         Console.WriteLine("Прямоугольник 2:");
         rectangle2.Output();
         Console.WriteLine("Пересекает ли с прямоугольником 1? " + rectangle1.Intersects(rectangle2));
-        Console.WriteLine("Пересекает ли прямая y = x с прямоугольником 1? " + rectangle1.IntersectsLine(1, 0));
         Console.WriteLine("Отображение прямоугольника:");
         rectangle2.Draw();
         Console.WriteLine();
@@ -247,6 +237,7 @@ class Program
         Console.WriteLine("Прямоугольник 2:");
         rectangle2.Output();
         Console.WriteLine("Отображение пересечения прямоугольников:");
-        rectangle1.Draw(rectangle2);
+        rectangle1.DrawIntersection(rectangle2);
+        Console.WriteLine();
     }
 }

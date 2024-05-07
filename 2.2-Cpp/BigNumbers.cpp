@@ -6,7 +6,8 @@
 
 using namespace std;
 
-typedef unsigned int BASE;
+typedef unsigned char BASE;
+typedef unsigned short DBASE;
 #define BASE_SIZE (sizeof(BASE) * 8)
 
 class bigNumber {
@@ -35,34 +36,34 @@ class bigNumber {
 
     // перегрузка операций
     bigNumber &operator=(const bigNumber &);
+    bigNumber operator+(const bigNumber &) const;
+    bigNumber &operator+=(const bigNumber &);
+    bigNumber operator-(const bigNumber &) const;
+    bigNumber &operator-=(const bigNumber &);
 
     // 16ричный ввод и вывод
     void printHex() const;
     void readHex();
-    /*
-        // перегрузка сложения
-        bigNumber operator+(const bigNumber &) const;
-        bigNumber &operator+=(const bigNumber &);
-
-        // перегрузка вычитания
-        bigNumber operator-(const bigNumber &) const;
-        bigNumber &operator-=(const bigNumber &);*/
 };
 
+// Конструктор
 bigNumber::bigNumber(int maxLen, int parameter) : length(maxLen), maxLength(maxLen) {
     coefficients = new BASE[maxLen]();
 
+    // Если параметр не равен 0, инициализируем случайными значениями
     if (parameter != 0) {
         for (int i = 0; i < maxLen; ++i) {
             coefficients[i] = rand();
         }
     }
 
+    // Убираем ведущие нули
     while (length > 1 && coefficients[length - 1] == 0) {
         --length;
     }
 }
 
+// Конструктор копирования
 bigNumber::bigNumber(const bigNumber &other) : length(other.length), maxLength(other.maxLength) {
     coefficients = new BASE[maxLength];
     for (int i = 0; i < maxLength; ++i) {
@@ -70,8 +71,12 @@ bigNumber::bigNumber(const bigNumber &other) : length(other.length), maxLength(o
     }
 }
 
-bigNumber::~bigNumber() { delete[] coefficients; }
+// Деструктор
+bigNumber::~bigNumber() {
+    delete[] coefficients;
+}
 
+// Оператор присваивания
 bigNumber &bigNumber::operator=(const bigNumber &other) {
     if (this != &other) {
         delete[] coefficients;
@@ -85,6 +90,7 @@ bigNumber &bigNumber::operator=(const bigNumber &other) {
     return *this;
 }
 
+// Печать числа в шестнадцатеричном формате
 void bigNumber::printHex() const {
     for (int i = length - 1; i >= 0; i--) {
         cout.width(BASE_SIZE / 4);
@@ -93,7 +99,8 @@ void bigNumber::printHex() const {
     }
 }
 
-void bigNumber::readHex() {  // ведущие нули и корректировка длины
+// Ввод числа в шестнадцатеричном формате
+void bigNumber::readHex() {
     string inputString;
     getline(cin, inputString);
     int inputStringLength = inputString.length();
@@ -105,6 +112,7 @@ void bigNumber::readHex() {  // ведущие нули и корректиро�
         coefficients[i] = 0;
     }
 
+    // Преобразование строки в шестнадцатеричные коэффициенты
     for (int i = inputStringLength - 1; i >= 0; --i) {
         unsigned int temp = 0;
         if ('0' <= inputString[i] && inputString[i] <= '9') {
@@ -126,43 +134,94 @@ void bigNumber::readHex() {  // ведущие нули и корректиро�
     }
 }
 
-/*bigNumber bigNumber::operator+(const bigNumber &other) const {
-    int maxLen = max(length, other.length) + 1;  // Максимальная длина для результата
-    bigNumber result(maxLen, 0);                 // Создаем объект для результата
+// Оператор сложения
+bigNumber bigNumber::operator+(const bigNumber &other) const {
+    int maxOfLengths = max(length, other.length);
+    int minOfLengths = min(length, other.length);
+    int sumLength = maxOfLengths + 1;  // Инициализация с учетом возможного переноса
+    bigNumber sumNumber(sumLength);    // Инициализация с учетом возможного переноса
 
-    int carry = 0;  // Перенос разряда
-    for (int i = 0; i < maxLen; ++i) {
-        int sum = coefficients[i] + other.coefficients[i] + carry;  // Сумма текущих разрядов и переноса
-        result.coefficients[i] = sum & ((1 << BASE_SIZE) - 1);      // Сохраняем только младшие BASE_SIZE бит суммы
-        carry = sum >> BASE_SIZE;                                   // Определяем новый перенос
+    BASE carry = 0;
+    for (int i = 0; i < minOfLengths; ++i) {
+        DBASE tempSum = (DBASE)coefficients[i] + (DBASE)other.coefficients[i] + carry;
+        sumNumber.coefficients[i] = (BASE)tempSum;
+        carry = tempSum >> BASE_SIZE;  // Перенос для следующего разряда
     }
 
-    // Убираем ведущие нули, если они есть
-    while (result.length > 1 && result.coefficients[result.length - 1] == 0) {
-        --result.length;
+    for (int i = minOfLengths; i < length; ++i) {
+        DBASE tempSum = (DBASE)coefficients[i] + carry;
+        sumNumber.coefficients[i] = (BASE)tempSum;
+        carry = tempSum >> BASE_SIZE;  // Перенос для следующего разряда
     }
 
-    return result;
+    for (int i = minOfLengths; i < other.length; ++i) {
+        DBASE tempSum = (DBASE)other.coefficients[i] + carry;
+        sumNumber.coefficients[i] = (BASE)tempSum;
+        carry = tempSum >> BASE_SIZE;  // Перенос для следующего разряда
+    }
+
+    sumNumber.coefficients[maxOfLengths] = carry;  // Установка старшего разряда
+
+    // Корректировка длины результата
+    sumNumber.length = sumLength;
+    while (sumNumber.length > 1 && sumNumber.coefficients[sumNumber.length - 1] == 0) {
+        --sumNumber.length;
+    }
+
+    return sumNumber;
 }
 
+// Оператор сложения с присваиванием
 bigNumber &bigNumber::operator+=(const bigNumber &other) {
-    int maxLen = max(length, other.length) + 1;  // Максимальная длина для результата
-    int carry = 0;                               // Перенос разряда
+    *this = *this + other;
+    return *this;
+}
 
-    // Выполняем сложение, учитывая перенос
-    for (int i = 0; i < maxLen; ++i) {
-        int sum = coefficients[i] + other.coefficients[i] + carry;  // Сумма текущих разрядов и переноса
-        coefficients[i] = sum & ((1 << BASE_SIZE) - 1);             // Сохраняем только младшие BASE_SIZE бит суммы
-        carry = sum >> BASE_SIZE;                                   // Определяем новый перенос
+// Оператор вычитания
+bigNumber bigNumber::operator-(const bigNumber &other) const {
+    if (*this < other) {
+        throw invalid_argument("Invalid argument");
     }
 
-    // Убираем ведущие нули, если они есть
-    while (length > 1 && coefficients[length - 1] == 0) {
-        --length;
+    bigNumber subtractionNumber(*this);  // Создание копии числа для вычитания
+
+    int borrow = 0;
+    for (int i = 0; i < other.length; ++i) {
+        DBASE tempSub = (DBASE)subtractionNumber.coefficients[i] - (DBASE)other.coefficients[i] - borrow;
+        if (tempSub < 0) {
+            tempSub += (1 << BASE_SIZE);  // Коррекция для заема
+            borrow = 1;
+        } else {
+            borrow = 0;
+        }
+        subtractionNumber.coefficients[i] = (BASE)tempSub;
     }
 
-    return *this;  // Возвращаем ссылку на текущий объект для поддержки цепочечных вызовов
-}*/
+    for (int i = other.length; i < subtractionNumber.length; ++i) {
+        DBASE tempSub = (DBASE)subtractionNumber.coefficients[i] - borrow;
+        if (tempSub < 0) {
+            tempSub += (1 << BASE_SIZE);  // Коррекция для заема
+            borrow = 1;
+        } else {
+            borrow = 0;
+        }
+        subtractionNumber.coefficients[i] = (BASE)tempSub;
+    }
+
+    // Корректировка длины результата
+    subtractionNumber.length = max(subtractionNumber.length, other.length);
+    while (subtractionNumber.length > 1 && subtractionNumber.coefficients[subtractionNumber.length - 1] == 0) {
+        --subtractionNumber.length;
+    }
+
+    return subtractionNumber;
+}
+
+// Оператор вычитания с присваиванием
+bigNumber &bigNumber::operator-=(const bigNumber &other) {
+    *this = *this - other;
+    return *this;
+}
 
 bool bigNumber::operator==(const bigNumber &other) const {
     if (length != other.length) {
@@ -294,6 +353,14 @@ int main() {
     } else {
         cout << "A is not greater than B" << endl;
     }
+    bigNumber numC = numA += numB;
+    cout << "Summary: ";
+    numC.printHex();
+
+    cout << "\n"
+         << "Subtraction: ";
+    numC -= numB;
+    numC.printHex();
 
     return 0;
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 class NaturalMergeSort
 {
     static void Main(string[] args)
     {
-        // Пути к файлам
         string directoryPath = @"C:\Users\artem\OneDrive\Рабочий стол\TSU_labs\2.2-Cs\File_sort\";
         string filePath = Path.Combine(directoryPath, "f.txt");
         string faPath = Path.Combine(directoryPath, "fa.txt");
@@ -14,25 +14,31 @@ class NaturalMergeSort
 
         try
         {
-            // Копируем f в fa
-            File.Copy(filePath, faPath, true);
+            bool generateNewFile = AskYesNoQuestion("Хотите ли вы создать новый файл f.txt?");
+            if (generateNewFile)
+            {
+                int count = GetIntegerInput("Введите количество элементов для файла f.txt:");
+                GenerateFile(filePath, count);
+            }
 
-            // Основной процесс сортировки
+            CopyFile(filePath, faPath);
+
             while (true)
             {
-                // Разбиваем fa на fb и fc по упорядоченным отрезкам, чередуя их
-                DivideIntoSegments(faPath, fbPath, fcPath);
+                DivideAndMerge(faPath, fbPath, fcPath);
 
-                // Если fc пуст, то завершаем процесс сортировки
                 if (!File.Exists(fcPath) || new FileInfo(fcPath).Length == 0)
                 {
                     Console.WriteLine("Сортировка завершена. Результат в файле fb.txt.");
                     break;
                 }
 
-                // Сливаем отрезки из fb и fc в fa
                 MergeSegments(fbPath, fcPath, faPath);
             }
+
+            Console.WriteLine(IsFileSorted(fbPath) ? "Файл fb.txt отсортирован." : "Файл fb.txt не отсортирован.");
+
+            WaitForEnterKey("Нажмите Enter для завершения программы.");
         }
         catch (Exception ex)
         {
@@ -40,79 +46,164 @@ class NaturalMergeSort
         }
     }
 
-    // Разбиваем файл на два по упорядоченным отрезкам
-    static void DivideIntoSegments(string inputFilePath, string fbPath, string fcPath)
+    static void GenerateFile(string filePath, int count)
     {
-        using (var inputFile = new StreamReader(inputFilePath))
+        Random random = new Random();
+        using (StreamWriter writer = new StreamWriter(filePath))
+        {
+            for (int i = 0; i < count; i++)
+            {
+                writer.WriteLine(random.Next(10000));
+            }
+        }
+        Console.WriteLine("Файл f.txt успешно создан.");
+    }
+
+    static bool IsFileSorted(string filePath)
+    {
+        using (StreamReader reader = new StreamReader(filePath))
+        {
+            int? previousValue = null;
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                int currentValue = int.Parse(line);
+                if (previousValue != null && currentValue < previousValue)
+                {
+                    return false;
+                }
+                previousValue = currentValue;
+            }
+        }
+        return true;
+    }
+
+    static void DivideAndMerge(string inputFilePath, string fbPath, string fcPath)
+    {
+        List<int> orderedIndexes = FindOrderedSegments(inputFilePath);
+
         using (var fbFile = new StreamWriter(fbPath))
         using (var fcFile = new StreamWriter(fcPath))
+        using (var inputFile = new StreamReader(inputFilePath))
         {
-            bool writeToFB = true; // Начинаем запись в fb
-            string previousLine = inputFile.ReadLine();
-            fbFile.WriteLine(previousLine); // Записываем первую строку в fb
+            bool writeToFB = true;
+            int currentIndex = 0;
 
-            string currentLine;
-            while ((currentLine = inputFile.ReadLine()) != null)
+            foreach (int index in orderedIndexes)
             {
-                // Если следующая строка меньше предыдущей, переключаемся на запись в fc
-                if (string.Compare(currentLine, previousLine) < 0)
-                {
-                    writeToFB = !writeToFB; // Переключаемся между fb и fc
-                }
-
-                // Записываем в соответствующий файл в зависимости от флага writeToFB
-                if (writeToFB)
-                {
-                    fbFile.WriteLine(currentLine);
-                }
-                else
-                {
-                    fcFile.WriteLine(currentLine);
-                }
-
-                previousLine = currentLine;
+                WriteSegmentToFile(inputFile, currentIndex, index, writeToFB ? fbFile : fcFile);
+                writeToFB = !writeToFB;
+                currentIndex = index + 1;
             }
         }
     }
 
-    // Слияние отрезков из двух файлов в один
-    static void MergeSegments(string fbPath, string fcPath, string faPath)
+    static List<int> FindOrderedSegments(string filePath)
     {
-        using (var fbFile = new StreamReader(fbPath))
-        using (var fcFile = new StreamReader(fcPath))
-        using (var faFile = new StreamWriter(faPath))
-        {
-            string lineFromFB = fbFile.ReadLine();
-            string lineFromFC = fcFile.ReadLine();
+        List<int> orderedIndexes = new List<int>();
+        bool orderedSegment = true;
 
-            // Слияние строк из fb и fc, запись в fa
-            while (lineFromFB != null && lineFromFC != null)
+        string[] lines = File.ReadAllLines(filePath);
+        for (int i = 0; i < lines.Length - 1; i++)
+        {
+            if (string.Compare(lines[i + 1], lines[i]) < 0)
             {
-                if (string.Compare(lineFromFB, lineFromFC) < 0)
+                if (!orderedSegment)
                 {
-                    faFile.WriteLine(lineFromFB);
-                    lineFromFB = fbFile.ReadLine();
+                    orderedSegment = true;
+                    orderedIndexes.Add(i);
                 }
                 else
                 {
-                    faFile.WriteLine(lineFromFC);
-                    lineFromFC = fcFile.ReadLine();
+                    orderedSegment = false;
                 }
             }
-
-            // Записываем оставшиеся строки из fb в fa
-            while (lineFromFB != null)
+            else
             {
-                faFile.WriteLine(lineFromFB);
-                lineFromFB = fbFile.ReadLine();
-            }
-
-            // Записываем оставшиеся строки из fc в fa
-            while (lineFromFC != null)
-            {
-                faFile.WriteLine(lineFromFC);
-                lineFromFC = fcFile.ReadLine();
+                if (!orderedSegment)
+                {
+                    orderedIndexes.Add(i);
+                }
             }
         }
+
+        if (!orderedSegment)
+        {
+            orderedIndexes.Add(lines.Length - 1);
+        }
+
+        return orderedIndexes;
+    }
+
+    static void WriteSegmentToFile(StreamReader reader, int startIndex, int endIndex, StreamWriter writer)
+    {
+        reader.BaseStream.Seek(0, SeekOrigin.Begin);
+        for (int i = startIndex; i <= endIndex; i++)
+        {
+            writer.WriteLine(reader.ReadLine());
+        }
+    }
+
+    static void MergeSegments(string fbPath, string fcPath, string faPath)
+    {
+        string[] linesFromFB = File.ReadAllLines(fbPath);
+        string[] linesFromFC = File.ReadAllLines(fcPath);
+        string[] mergedLines = new string[linesFromFB.Length + linesFromFC.Length];
+
+        int fbIndex = 0, fcIndex = 0, mergedIndex = 0;
+        while (fbIndex < linesFromFB.Length && fcIndex < linesFromFC.Length)
+        {
+            if (string.Compare(linesFromFB[fbIndex], linesFromFC[fcIndex]) < 0)
+            {
+                mergedLines[mergedIndex] = linesFromFB[fbIndex];
+                fbIndex++;
+            }
+            else
+            {
+                mergedLines[mergedIndex] = linesFromFC[fcIndex];
+                fcIndex++;
+            }
+            mergedIndex++;
+        }
+
+        while (fbIndex < linesFromFB.Length)
+        {
+            mergedLines[mergedIndex] = linesFromFB[fbIndex];
+            fbIndex++;
+            mergedIndex++;
+        }
+
+        while (fcIndex < linesFromFC.Length)
+        {
+            mergedLines[mergedIndex] = linesFromFC[fcIndex];
+            fcIndex++;
+            mergedIndex++;
+        }
+
+        File.WriteAllLines(faPath, mergedLines);
+    }
+
+    static void CopyFile(string sourceFilePath, string destinationFilePath)
+    {
+        File.Copy(sourceFilePath, destinationFilePath, true);
+    }
+
+    static bool AskYesNoQuestion(string question)
+    {
+        Console.WriteLine(question + " (yes/no)");
+        string answer = Console.ReadLine().ToLower();
+        return answer == "yes" || answer == "y";
+    }
+
+    static int GetIntegerInput(string prompt)
+    {
+        Console.WriteLine(prompt);
+        return int.Parse(Console.ReadLine());
+    }
+
+    static void WaitForEnterKey(string message)
+    {
+        Console.WriteLine(message);
+        Console.ReadLine();
     }
 }
