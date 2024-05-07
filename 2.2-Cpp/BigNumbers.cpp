@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef unsigned short BASE;
+typedef unsigned int BASE;
 #define BASE_SIZE (sizeof(BASE) * 8)
 
 class bigNumber {
@@ -39,14 +39,14 @@ class bigNumber {
     // 16ричный ввод и вывод
     void printHex() const;
     void readHex();
+    /*
+        // перегрузка сложения
+        bigNumber operator+(const bigNumber &) const;
+        bigNumber &operator+=(const bigNumber &);
 
-    // перегрузка сложения
-    bigNumber operator+(const bigNumber &) const;
-    bigNumber &operator+=(const bigNumber &);
-
-    // перегрузка вычитания
-    bigNumber operator-(const bigNumber &) const;
-    bigNumber &operator-=(const bigNumber &);
+        // перегрузка вычитания
+        bigNumber operator-(const bigNumber &) const;
+        bigNumber &operator-=(const bigNumber &);*/
 };
 
 bigNumber::bigNumber(int maxLen, int parameter) : length(maxLen), maxLength(maxLen) {
@@ -89,23 +89,23 @@ void bigNumber::printHex() const {
     for (int i = length - 1; i >= 0; i--) {
         cout.width(BASE_SIZE / 4);
         cout.fill('0');
-        cout << hex << coefficients[i] << " ";
+        cout << hex << (int)coefficients[i] << " ";
     }
 }
 
-void bigNumber::readHex() {
+void bigNumber::readHex() {  // ведущие нули и корректировка длины
     string inputString;
     getline(cin, inputString);
-    int inputStringLength = inputString.length() - 1;
+    int inputStringLength = inputString.length();
     int k = 0, j = 0;
-    length = inputStringLength / (BASE_SIZE / 4) + 1;
+    length = (inputStringLength - 1) / (BASE_SIZE / 4) + 1;
     maxLength = length;
     coefficients = new BASE[length];
     for (int i = 0; i < length; ++i) {
         coefficients[i] = 0;
     }
 
-    for (int i = inputStringLength; i >= 0; --i) {
+    for (int i = inputStringLength - 1; i >= 0; --i) {
         unsigned int temp = 0;
         if ('0' <= inputString[i] && inputString[i] <= '9') {
             temp = inputString[i] - '0';
@@ -126,7 +126,7 @@ void bigNumber::readHex() {
     }
 }
 
-bigNumber bigNumber::operator+(const bigNumber &other) const {
+/*bigNumber bigNumber::operator+(const bigNumber &other) const {
     int maxLen = max(length, other.length) + 1;  // Максимальная длина для результата
     bigNumber result(maxLen, 0);                 // Создаем объект для результата
 
@@ -162,7 +162,7 @@ bigNumber &bigNumber::operator+=(const bigNumber &other) {
     }
 
     return *this;  // Возвращаем ссылку на текущий объект для поддержки цепочечных вызовов
-}
+}*/
 
 bool bigNumber::operator==(const bigNumber &other) const {
     if (length != other.length) {
@@ -294,9 +294,6 @@ int main() {
     } else {
         cout << "A is not greater than B" << endl;
     }
-
-    numA += numB;
-    numA.printHex();
 
     return 0;
 }
