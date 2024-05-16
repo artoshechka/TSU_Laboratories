@@ -11,6 +11,7 @@ class NaturalMergeSort
         string faPath = Path.Combine(directoryPath, "fa.txt");
         string fbPath = Path.Combine(directoryPath, "fb.txt");
         string fcPath = Path.Combine(directoryPath, "fc.txt");
+        string resultPath = Path.Combine(directoryPath, "sorted_result.txt");
 
         try
         {
@@ -36,8 +37,7 @@ class NaturalMergeSort
                 MergeSegments(fbPath, fcPath, faPath);
             }
 
-            Console.WriteLine(IsFileSorted(fbPath) ? "Файл fb.txt отсортирован." : "Файл fb.txt не отсортирован.");
-
+            Console.WriteLine(IsFileSorted(fbPath) ? "Файл fb.txt отсортирован." : "Файл fb.txt не отсортирован.");            
             WaitForEnterKey("Нажмите Enter для завершения программы.");
         }
         catch (Exception ex)

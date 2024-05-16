@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cs\\File_sort\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C6733C3C-0D35-4B5C-9213-E648C690E712}|File_sort.csproj|c:\\users\\artem\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\tsu_labs\\2.2-cs\\file_sort\\fb.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{C6733C3C-0D35-4B5C-9213-E648C690E712}|File_sort.csproj|solutionrelative:fb.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C6733C3C-0D35-4B5C-9213-E648C690E712}|File_sort.csproj|c:\\users\\artem\\onedrive\\\u0440\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\tsu_labs\\2.2-cs\\file_sort\\naturalmergesort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C6733C3C-0D35-4B5C-9213-E648C690E712}|File_sort.csproj|solutionrelative:naturalmergesort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cs\\File_sort\\NaturalMergeSort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:NaturalMergeSort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,27 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "fb.txt",
-              "DocumentMoniker": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cs\\File_sort\\fb.txt",
-              "RelativeDocumentMoniker": "fb.txt",
-              "ToolTip": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cs\\File_sort\\fb.txt",
-              "RelativeToolTip": "fb.txt",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2024-05-07T09:13:00.459Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "NaturalMergeSort.cs",
               "DocumentMoniker": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cs\\File_sort\\NaturalMergeSort.cs",
               "RelativeDocumentMoniker": "NaturalMergeSort.cs",
               "ToolTip": "C:\\Users\\artem\\OneDrive\\\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B\\TSU_labs\\2.2-Cs\\File_sort\\NaturalMergeSort.cs",
               "RelativeToolTip": "NaturalMergeSort.cs",
-              "ViewState": "AQIAALIAAAAAAAAAAAAQwNEAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T03:32:57.162Z",
+              "WhenOpened": "2024-05-13T14:13:13.269Z",
               "EditorCaption": ""
             }
           ]
