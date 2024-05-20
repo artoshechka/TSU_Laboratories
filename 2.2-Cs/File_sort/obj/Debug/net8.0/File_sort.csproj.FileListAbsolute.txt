@@ -28,3 +28,18 @@ C:\Users\artem\OneDrive\Рабочий стол\TSU_labs\2.2-Cs\File_sort\obj\De
 C:\Users\artem\OneDrive\Рабочий стол\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.pdb
 C:\Users\artem\OneDrive\Рабочий стол\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.genruntimeconfig.cache
 C:\Users\artem\OneDrive\Рабочий стол\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\ref\File_sort.dll
+C:\TSU_labs\2.2-Cs\File_sort\bin\Debug\net8.0\File_sort.exe
+C:\TSU_labs\2.2-Cs\File_sort\bin\Debug\net8.0\File_sort.deps.json
+C:\TSU_labs\2.2-Cs\File_sort\bin\Debug\net8.0\File_sort.runtimeconfig.json
+C:\TSU_labs\2.2-Cs\File_sort\bin\Debug\net8.0\File_sort.dll
+C:\TSU_labs\2.2-Cs\File_sort\bin\Debug\net8.0\File_sort.pdb
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.GeneratedMSBuildEditorConfig.editorconfig
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.AssemblyInfoInputs.cache
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.AssemblyInfo.cs
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.csproj.CoreCompileInputs.cache
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.sourcelink.json
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.dll
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\refint\File_sort.dll
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.pdb
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\File_sort.genruntimeconfig.cache
+C:\TSU_labs\2.2-Cs\File_sort\obj\Debug\net8.0\ref\File_sort.dll
