@@ -1,0 +1,11 @@
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\bin\Debug\Programming.exe.config
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\bin\Debug\Programming.exe
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\bin\Debug\Programming.pdb
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.csproj.AssemblyReference.cache
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.Model.Panels.RectanglesCollisionControl.resources
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.Properties.Resources.resources
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.csproj.GenerateResource.cache
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.csproj.CoreCompileInputs.cache
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.exe
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.pdb
+C:\Users\artem\source\repos\Programming\src\Programming\Programming\obj\Debug\Programming.View.MainForm.resources

@@ -7,10 +7,10 @@ class NaturalMergeSort
     static void Main(string[] args)
     {
         // Файлы, которые будут использоваться
-        string inputFile = "f.txt";
-        string faFile = "fa.txt";
-        string fbFile = "fb.txt";
-        string fcFile = "fc.txt";
+        string inputFile = "C:\\TSU_labs\\2.2-Cs\\File_sort\\f.txt";
+        string faFile = "C:\\TSU_labs\\2.2-Cs\\File_sort\\fa.txt";
+        string fbFile = "C:\\TSU_labs\\2.2-Cs\\File_sort\\fb.txt";
+        string fcFile = "C:\\TSU_labs\\2.2-Cs\\File_sort\\fc.txt";
 
         // Спрашиваем пользователя, хочет ли он сгенерировать файл со случайными числами
         Console.WriteLine("Хотите сгенерировать файл со случайными числами? (да/нет)");
@@ -44,12 +44,15 @@ class NaturalMergeSort
                 break;
 
             // Сливаем сегменты из fb и fc в fa
-            MergeFbFcToFa(faFile, fbFile, fcFile);
+            MergeFiles(fbFile, fcFile, faFile);
         }
 
-        // Переименовываем fb в результирующий файл
-        File.Copy(fbFile, inputFile, true);
-        Console.WriteLine("Сортировка завершена. Результат находится в файле " + inputFile);
+        // Копируем отсортированные данные в исходный файл
+        Console.WriteLine("Сортировка завершена. Результат находится в файле " + fbFile);
+
+        bool isIdentical = CheckIfIdentical(inputFile, fbFile);
+
+        Console.WriteLine($"Элементы файлов {inputFile} и {fbFile} идентичны: {isIdentical}");
     }
 
     static void GenerateRandomNumbersFile(string fileName, int count)
@@ -78,50 +81,111 @@ class NaturalMergeSort
         using (StreamWriter writerFb = new StreamWriter(fbFile))
         using (StreamWriter writerFc = new StreamWriter(fcFile))
         {
-            int current, previous = int.MinValue;
+            int previous = int.Parse(reader.ReadLine());
+            int current;
             bool writeToFb = true;
+
+            // Записываем первый элемент в fb
+            writerFb.WriteLine(previous);
+
             while (!reader.EndOfStream)
             {
                 current = int.Parse(reader.ReadLine());
+
                 if (current < previous)
+                {
+                    // Меняем файл записи при обнаружении несортированного элемента
                     writeToFb = !writeToFb;
+                }
 
                 if (writeToFb)
+                {
                     writerFb.WriteLine(current);
+                }
                 else
+                {
                     writerFc.WriteLine(current);
+                }
 
                 previous = current;
             }
         }
     }
 
-    static void MergeFbFcToFa(string faFile, string fbFile, string fcFile)
+    static void MergeFiles(string inputFile1, string inputFile2, string outputFile)
     {
-        using (StreamReader readerFb = new StreamReader(fbFile))
-        using (StreamReader readerFc = new StreamReader(fcFile))
-        using (StreamWriter writerFa = new StreamWriter(faFile))
+        using (var reader1 = new StreamReader(inputFile1))
+        using (var reader2 = new StreamReader(inputFile2))
+        using (var writer = new StreamWriter(outputFile))
         {
-            string lineFb = readerFb.ReadLine();
-            string lineFc = readerFc.ReadLine();
-            int valueFb = lineFb != null ? int.Parse(lineFb) : int.MaxValue;
-            int valueFc = lineFc != null ? int.Parse(lineFc) : int.MaxValue;
+            string line1 = reader1.ReadLine();
+            string line2 = reader2.ReadLine();
 
-            while (lineFb != null || lineFc != null)
+            while (line1 != null && line2 != null)
             {
-                if (valueFb <= valueFc)
+                int numberLine1 = int.Parse(line1);
+                int numberLine2 = int.Parse(line2);
+
+                if (numberLine1 <= numberLine2)
                 {
-                    writerFa.WriteLine(valueFb);
-                    lineFb = readerFb.ReadLine();
-                    valueFb = lineFb != null ? int.Parse(lineFb) : int.MaxValue;
+                    writer.WriteLine(line1);
+                    line1 = reader1.ReadLine();
                 }
                 else
                 {
-                    writerFa.WriteLine(valueFc);
-                    lineFc = readerFc.ReadLine();
-                    valueFc = lineFc != null ? int.Parse(lineFc) : int.MaxValue;
+                    writer.WriteLine(line2);
+                    line2 = reader2.ReadLine();
                 }
             }
+
+            // Дописываем оставшиеся элементы
+            WriteRemainingLines(writer, reader1, line1);
+            WriteRemainingLines(writer, reader2, line2);
         }
+    }
+
+    static void WriteRemainingLines(StreamWriter writer, StreamReader reader, string line)
+    {
+        while (line != null)
+        {
+            writer.WriteLine(line);
+            line = reader.ReadLine();
+        }
+    }
+
+
+    static bool CheckIfIdentical(string fileName1, string fileName2)
+    {
+        List<int> list1 = new List<int>();
+        List<int> list2 = new List<int>();
+
+        using (StreamReader reader1 = new StreamReader(fileName1))
+        {
+            while (!reader1.EndOfStream)
+            {
+                list1.Add(int.Parse(reader1.ReadLine()));
+            }
+        }
+
+        using (StreamReader reader2 = new StreamReader(fileName2))
+        {
+            while (!reader2.EndOfStream)
+            {
+                list2.Add(int.Parse(reader2.ReadLine()));
+            }
+        }
+
+        if (list1.Count != list2.Count)
+            return false;
+
+        list1.Sort();
+        list2.Sort();
+
+        for (int i = 0; i < list1.Count; i++)
+        {
+            if (list1[i] != list2[i])
+                return false;
+        }
+        return true;
     }
 }

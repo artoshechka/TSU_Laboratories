@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\TSU_labs\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cpp\\BigNumLib.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cpp\\BigNumLib.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cpp\\bigNumbers.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cpp\\bigNumbers.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cs\\Class\\Class\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cs\\Class\\Class\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BigNumLib.h",
-              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cpp\\BigNumLib.h",
-              "RelativeDocumentMoniker": "2.2-Cpp\\BigNumLib.h",
-              "ToolTip": "C:\\TSU_labs\\2.2-Cpp\\BigNumLib.h",
-              "RelativeToolTip": "2.2-Cpp\\BigNumLib.h",
-              "ViewState": "AQIAAIgCAAAAAAAAAAAAAJICAAAKAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-05-20T08:08:32.717Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "bigNumbers.cpp",
-              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cpp\\bigNumbers.cpp",
-              "RelativeDocumentMoniker": "2.2-Cpp\\bigNumbers.cpp",
-              "ToolTip": "C:\\TSU_labs\\2.2-Cpp\\bigNumbers.cpp",
-              "RelativeToolTip": "2.2-Cpp\\bigNumbers.cpp",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAADEAAAARAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-20T08:06:32.447Z",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\Class\\Class\\Program.cs",
+              "RelativeDocumentMoniker": "2.2-Cs\\Class\\Class\\Program.cs",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\Class\\Class\\Program.cs",
+              "RelativeToolTip": "2.2-Cs\\Class\\Class\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJQAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-03T13:44:50.089Z",
               "EditorCaption": ""
             }
           ]
