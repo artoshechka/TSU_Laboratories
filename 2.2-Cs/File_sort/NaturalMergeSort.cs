@@ -25,6 +25,7 @@ class NaturalMergeSort
                 Console.WriteLine("Пожалуйста, введите положительное целое число:");
             }
             GenerateRandomNumbersFile(inputFile, count);
+
         }
 
         // Создаем вспомогательные файлы

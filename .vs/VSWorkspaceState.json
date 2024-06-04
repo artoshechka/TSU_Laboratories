@@ -2,9 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\2.2-Cs",
-    "\\2.2-Cs\\Class",
-    "\\2.2-Cs\\Class\\Class"
+    "\\2.2-Cs\\Class\\Programming",
+    "\\2.2-Cs\\Class\\Programming\\obj",
+    "\\2.2-Cs\\Class\\Programming\\Resources",
+    "\\2.2-Cs\\Class\\Programming\\View",
+    "\\2.2-Cs\\CommonTasks",
+    "\\2.2-Cs\\CommonTasks\\CommonTask"
   ],
-  "SelectedNode": "\\2.2-Cs\\Class\\Class\\Program.cs",
+  "SelectedNode": "\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\TSU_labs\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cs\\Class\\Class\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cs\\Class\\Class\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\App.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cs\\Class\\Programming\\App.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cs\\Class\\Programming\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\Model\\Geometry\\Rectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cs\\Class\\Programming\\Model\\Geometry\\Rectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cs\\CommonTasks\\CommonTask\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +26,62 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\App.config",
+              "RelativeDocumentMoniker": "2.2-Cs\\Class\\Programming\\App.config",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\App.config",
+              "RelativeToolTip": "2.2-Cs\\Class\\Programming\\App.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-06-04T02:52:50.069Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\Class\\Class\\Program.cs",
-              "RelativeDocumentMoniker": "2.2-Cs\\Class\\Class\\Program.cs",
-              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\Class\\Class\\Program.cs",
-              "RelativeToolTip": "2.2-Cs\\Class\\Class\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJQAAAAsAAAA",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\Program.cs",
+              "RelativeDocumentMoniker": "2.2-Cs\\Class\\Programming\\Program.cs",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\Program.cs",
+              "RelativeToolTip": "2.2-Cs\\Class\\Programming\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-03T13:44:50.089Z",
+              "WhenOpened": "2024-06-04T02:52:19.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Rectangle.cs",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\Model\\Geometry\\Rectangle.cs",
+              "RelativeDocumentMoniker": "2.2-Cs\\Class\\Programming\\Model\\Geometry\\Rectangle.cs",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\Model\\Geometry\\Rectangle.cs",
+              "RelativeToolTip": "2.2-Cs\\Class\\Programming\\Model\\Geometry\\Rectangle.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T02:42:43.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
+              "RelativeDocumentMoniker": "2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
+              "RelativeToolTip": "2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T02:29:28.75Z",
               "EditorCaption": ""
             }
           ]

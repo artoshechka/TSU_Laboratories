@@ -1,7 +1,15 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\artem\\source\\repos\\Programming\\src\\Programming\\Programming\\View\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\View\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4227EDD-C0A8-4532-961A-8C45744AE06E}|..\\Programming.csproj|c:\\tsu_labs\\2.2-cs\\class\\programming\\view\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B4227EDD-C0A8-4532-961A-8C45744AE06E}|..\\Programming.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +17,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\CommonTasks\\CommonTask\\Program.cs",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
+              "RelativeToolTip": "..\\..\\..\\CommonTasks\\CommonTask\\Program.cs",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAAEoAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T02:55:31.661Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\View\\MainForm.cs",
+              "RelativeDocumentMoniker": "MainForm.cs",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cs\\Class\\Programming\\View\\MainForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
+              "RelativeToolTip": "MainForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T02:53:28.287Z",
+              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
             }
           ]
         }
