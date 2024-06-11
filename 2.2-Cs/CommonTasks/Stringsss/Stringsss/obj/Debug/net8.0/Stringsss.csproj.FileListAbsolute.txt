@@ -1,0 +1,15 @@
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\bin\Debug\net8.0\Stringsss.exe
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\bin\Debug\net8.0\Stringsss.deps.json
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\bin\Debug\net8.0\Stringsss.runtimeconfig.json
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\bin\Debug\net8.0\Stringsss.dll
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\bin\Debug\net8.0\Stringsss.pdb
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.GeneratedMSBuildEditorConfig.editorconfig
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.AssemblyInfoInputs.cache
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.AssemblyInfo.cs
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.csproj.CoreCompileInputs.cache
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.sourcelink.json
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.dll
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\refint\Stringsss.dll
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.pdb
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\Stringsss.genruntimeconfig.cache
+C:\TSU_labs\2.2-Cs\CommonTasks\Stringsss\Stringsss\obj\Debug\net8.0\ref\Stringsss.dll

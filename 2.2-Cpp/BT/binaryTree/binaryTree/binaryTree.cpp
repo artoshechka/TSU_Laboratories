@@ -1,6 +1,12 @@
 ﻿#include <iostream>
+#include <iomanip> 
+#include <queue>
 
+using namespace std;
+
+// класс узла дерева
 class Node {
+protected:
 	int key;
 	Node* right;
 	Node* left;
@@ -18,18 +24,21 @@ public:
 	friend class BinaryTree;
 };
 
+// класс бинарное дерево
 class BinaryTree {
 protected:
 	Node* root;
-	//добавление узла
+	// добавление узла
 	Node* addNode(Node*, Node*);
-	//удаление дерева
+	// удаление дерева
 	void deleteBinaryTree(Node*);
+
 public:
-	//конструкторы + деструктор
+	// конструкторы по умолчанию
 	BinaryTree() {
 		root = nullptr;
 	}
+	// конструктор по длине
 	BinaryTree(int length) {
 		root = nullptr;
 		for (int i = 0; i < length; ++i) {
@@ -37,6 +46,7 @@ public:
 			this->addNode(tempValue);
 		}
 	}
+	// конструктор по массиву значений
 	BinaryTree(int length, int* valueArray) {
 		root = nullptr;
 		for (int i = 0; i < length; ++i) {
@@ -44,25 +54,62 @@ public:
 			this->addNode(tempValue);
 		}
 	}
+	// конструктор копирования
 	BinaryTree(const BinaryTree& otherTree) {
 		root = addNode(root, otherTree.root);
 	}
+	// деструктор
 	~BinaryTree() {
 		deleteBinaryTree(root);
 	}
 
-	//перегрузка оператора присваивания
+	// перегрузка оператора присваивания
 	BinaryTree& operator = (const BinaryTree&);
 
-	//поиск узла по ключу
+	// поиск узла по ключу
 	Node* findNodeByKey(int);
 
-	//добавление узла
+	// добавление узла
 	void addNode(int value);
 
-	//удаление узла
+	// удаление узла
 	Node* deleteNode();
+
+	// поиск минимума
+	Node* findMin();
+
+	// поиск максимума
+	Node* findMax();
+
+	// обход по уровням
+	void levelOrderTraversal();
+
+	// обход ЛПК (in-order)
+	void inorderTraversal(Node* node);
+	void inorderTraversal();
+
+	// функция вывода дерева
+	void printTree() {
+		printTree(root, 0);
+	}
+
+private:
+	// вспомогательная функция для вывода дерева
+	void printTree(Node* node, int spaces) {
+		if (node == nullptr) {
+			return;
+		}
+		// Вывод правого поддерева с отступом
+		printTree(node->right, spaces + 4);
+		// Вывод узла с пробелами для отступа
+		cout << setw(spaces) << " " << node->key << endl;
+		// Вывод левого поддерева с отступом
+		printTree(node->left, spaces + 4);
+	}
+
+	// остальные приватные члены класса...
 };
+
 Node* BinaryTree::addNode(Node* currentNode, Node* otherNode)
 {
 	if (!otherNode) {
@@ -119,7 +166,7 @@ BinaryTree& BinaryTree::operator=(const BinaryTree& otherTree)
 
 Node* BinaryTree::findNodeByKey(int keyValue)
 {
-	if (root = nullptr) {
+	if (root == nullptr) {
 		return nullptr;
 	}
 	Node* currentNode = root;
@@ -140,5 +187,92 @@ Node* BinaryTree::findNodeByKey(int keyValue)
 			currentNode = currentNode->right;
 		}
 	}
+	return nullptr; // не найден
 }
 
+Node* BinaryTree::findMin()
+{
+	if (root == nullptr) {
+		return nullptr;
+	}
+	Node* currentNode = root;
+	while (currentNode->left) {
+		currentNode = currentNode->left;
+	}
+	return currentNode;
+}
+
+Node* BinaryTree::findMax()
+{
+	if (root == nullptr) {
+		return nullptr;
+	}
+	Node* currentNode = root;
+	while (currentNode->right) {
+		currentNode = currentNode->right;
+	}
+	return currentNode;
+}
+
+void BinaryTree::levelOrderTraversal()
+{
+	if (root == nullptr) {
+		return;
+	}
+	queue<Node*> q;
+	q.push(root);
+	while (!q.empty()) {
+		Node* currentNode = q.front();
+		q.pop();
+		cout << currentNode->key << " ";
+		if (currentNode->left) {
+			q.push(currentNode->left);
+		}
+		if (currentNode->right) {
+			q.push(currentNode->right);
+		}
+	}
+	cout << endl;
+}
+
+void BinaryTree::inorderTraversal(Node* node)
+{
+	if (node == nullptr) {
+		return;
+	}
+	inorderTraversal(node->left);
+	cout << node->key << " ";
+	inorderTraversal(node->right);
+}
+
+void BinaryTree::inorderTraversal()
+{
+	inorderTraversal(root);
+	cout << endl;
+}
+
+int main() {
+	int length;
+	cout << "Enter the number of elements in the tree: ";
+	cin >> length;
+
+	int* values = new int[length];
+	cout << "Enter the values for the tree elements:" << endl;
+	for (int i = 0; i < length; ++i) {
+		cout << "Element " << i + 1 << ": ";
+		cin >> values[i];
+	}
+
+	BinaryTree tree(length, values);
+
+	cout << "Level Order Traversal: ";
+	tree.levelOrderTraversal();
+
+	cout << "Inorder Traversal: ";
+	tree.inorderTraversal();
+
+	cout << "Tree Structure:" << endl;
+	tree.printTree();
+
+	return 0;
+}

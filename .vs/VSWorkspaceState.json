@@ -1,14 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\2.2-Cs",
-    "\\2.2-Cs\\Class\\Programming",
-    "\\2.2-Cs\\Class\\Programming\\obj",
-    "\\2.2-Cs\\Class\\Programming\\Resources",
-    "\\2.2-Cs\\Class\\Programming\\View",
-    "\\2.2-Cs\\CommonTasks",
-    "\\2.2-Cs\\CommonTasks\\CommonTask"
+    "\\2.2-Cpp",
+    "\\2.2-Cpp\\BN",
+    "\\2.2-Cpp\\BT\\binaryTree",
+    "\\2.2-Cpp\\BT\\binaryTree\\binaryTree",
+    "\\2.2-Cs\\CommonTasks"
   ],
-  "SelectedNode": "\\2.2-Cs\\CommonTasks\\CommonTask\\Program.cs",
+  "SelectedNode": "\\2.2-Cpp",
   "PreviewInSolutionExplorer": false
 }
