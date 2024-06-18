@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\TSU_labs\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cpp\\BN\\bigNumbers.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cpp\\BN\\bigNumbers.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cpp\\BN\\BigNumLib.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cpp\\BN\\BigNumLib.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cpp\\BN\\bigNumbers.vcxproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cpp\\BN\\bigNumbers.vcxproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TSU_labs\\2.2-Cpp\\BT\\binaryTree\\binaryTree\\binaryTree.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:2.2-Cpp\\BT\\binaryTree\\binaryTree\\binaryTree.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
@@ -17,18 +29,53 @@
           "SelectedChildIndex": 1,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BigNumLib.h",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cpp\\BN\\BigNumLib.h",
+              "RelativeDocumentMoniker": "2.2-Cpp\\BN\\BigNumLib.h",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cpp\\BN\\BigNumLib.h",
+              "RelativeToolTip": "2.2-Cpp\\BN\\BigNumLib.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-13T08:35:25.072Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "bigNumbers.cpp",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cpp\\BN\\bigNumbers.cpp",
+              "RelativeDocumentMoniker": "2.2-Cpp\\BN\\bigNumbers.cpp",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cpp\\BN\\bigNumbers.cpp",
+              "RelativeToolTip": "2.2-Cpp\\BN\\bigNumbers.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-13T08:34:36.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "bigNumbers.vcxproj",
+              "DocumentMoniker": "C:\\TSU_labs\\2.2-Cpp\\BN\\bigNumbers.vcxproj",
+              "RelativeDocumentMoniker": "2.2-Cpp\\BN\\bigNumbers.vcxproj",
+              "ToolTip": "C:\\TSU_labs\\2.2-Cpp\\BN\\bigNumbers.vcxproj",
+              "RelativeToolTip": "2.2-Cpp\\BN\\bigNumbers.vcxproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000698|",
+              "WhenOpened": "2024-06-13T08:34:35.195Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "binaryTree.cpp",
               "DocumentMoniker": "C:\\TSU_labs\\2.2-Cpp\\BT\\binaryTree\\binaryTree\\binaryTree.cpp",
               "RelativeDocumentMoniker": "2.2-Cpp\\BT\\binaryTree\\binaryTree\\binaryTree.cpp",
               "ToolTip": "C:\\TSU_labs\\2.2-Cpp\\BT\\binaryTree\\binaryTree\\binaryTree.cpp",
               "RelativeToolTip": "2.2-Cpp\\BT\\binaryTree\\binaryTree\\binaryTree.cpp",
-              "ViewState": "AQIAAPkAAAAAAAAAAAAqwP4AAAA2AAAA",
+              "ViewState": "AQIAABQBAAAAAAAAAAAAANcAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-11T08:35:07.049Z",
               "EditorCaption": ""

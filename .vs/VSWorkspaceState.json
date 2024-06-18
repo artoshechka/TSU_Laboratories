@@ -3,10 +3,10 @@
     "",
     "\\2.2-Cpp",
     "\\2.2-Cpp\\BN",
+    "\\2.2-Cpp\\BT",
     "\\2.2-Cpp\\BT\\binaryTree",
-    "\\2.2-Cpp\\BT\\binaryTree\\binaryTree",
-    "\\2.2-Cs\\CommonTasks"
+    "\\2.2-Cpp\\BT\\binaryTree\\binaryTree"
   ],
-  "SelectedNode": "\\2.2-Cpp",
+  "SelectedNode": "\\2.2-Cpp\\BN\\bigNumbers.cpp",
   "PreviewInSolutionExplorer": false
 }

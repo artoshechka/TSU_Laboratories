@@ -1,117 +1,112 @@
 ﻿#include <iostream>
-#include <iomanip> 
+#include <iomanip>
 #include <queue>
 
 using namespace std;
 
-// класс узла дерева
+// Класс узла дерева
 class Node {
 protected:
-	int key;
-	Node* right;
-	Node* left;
+	int key;      // Ключ узла
+	Node* left;   // Указатель на левое поддерево
+	Node* right;  // Указатель на правое поддерево
+
 public:
-	Node(int Key = 0, Node* Left = nullptr, Node* Right = nullptr) {
-		key = Key;
-		left = Left;
-		right = Right;
-	}
+	Node(int Key = 0, Node* Left = nullptr, Node* Right = nullptr)
+		: key(Key), left(Left), right(Right) {}
+
 	~Node() {
-		key = 0;
 		left = nullptr;
 		right = nullptr;
 	}
+
 	friend class BinaryTree;
 };
 
-// класс бинарное дерево
+// Класс бинарного дерева
 class BinaryTree {
 protected:
-	Node* root;
-	// добавление узла
+	Node* root; // Корень дерева
+
+	// Вспомогательная функция для добавления узла
 	Node* addNode(Node*, Node*);
-	// удаление дерева
+	// Вспомогательная функция для удаления дерева
 	void deleteBinaryTree(Node*);
 
+	// Вспомогательная функция для удаления по значению
+	Node* deleteByValue(Node*, int);
+
+	// Вспомогательная функция для поиска минимального значения в поддереве
+	Node* findMin(Node*);
+
+	// Вспомогательная функция для поиска максимального значения в поддереве
+	Node* findMax(Node*);
+
 public:
-	// конструкторы по умолчанию
-	BinaryTree() {
-		root = nullptr;
-	}
-	// конструктор по длине
-	BinaryTree(int length) {
-		root = nullptr;
+	BinaryTree() : root(nullptr) {}
+
+	BinaryTree(int length) : root(nullptr) {
 		for (int i = 0; i < length; ++i) {
 			int tempValue = rand() % 100;
 			this->addNode(tempValue);
 		}
 	}
-	// конструктор по массиву значений
-	BinaryTree(int length, int* valueArray) {
-		root = nullptr;
+
+	BinaryTree(int length, int* valueArray) : root(nullptr) {
 		for (int i = 0; i < length; ++i) {
-			int tempValue = valueArray[i];
-			this->addNode(tempValue);
+			this->addNode(valueArray[i]);
 		}
 	}
-	// конструктор копирования
-	BinaryTree(const BinaryTree& otherTree) {
+
+	BinaryTree(const BinaryTree& otherTree) : root(nullptr) {
 		root = addNode(root, otherTree.root);
 	}
-	// деструктор
+
 	~BinaryTree() {
 		deleteBinaryTree(root);
 	}
 
-	// перегрузка оператора присваивания
-	BinaryTree& operator = (const BinaryTree&);
+	BinaryTree& operator=(const BinaryTree&);
 
-	// поиск узла по ключу
+	// Функция поиска узла по ключу
 	Node* findNodeByKey(int);
 
-	// добавление узла
+	// Функция добавления узла
 	void addNode(int value);
 
-	// удаление узла
-	Node* deleteNode();
+	// Функция удаления узла по ключу
+	void deleteByKey(int value);
 
-	// поиск минимума
+	// Функция удаления узла по указателю
+	void deleteNode(Node* node);
+
+	// Функция поиска минимального узла
 	Node* findMin();
 
-	// поиск максимума
+	// Функция поиска максимального узла
 	Node* findMax();
 
-	// обход по уровням
-	void levelOrderTraversal();
-
-	// обход ЛПК (in-order)
-	void inorderTraversal(Node* node);
-	void inorderTraversal();
-
-	// функция вывода дерева
+	// Функция вывода дерева
 	void printTree() {
 		printTree(root, 0);
 	}
 
-private:
-	// вспомогательная функция для вывода дерева
-	void printTree(Node* node, int spaces) {
-		if (node == nullptr) {
-			return;
-		}
-		// Вывод правого поддерева с отступом
-		printTree(node->right, spaces + 4);
-		// Вывод узла с пробелами для отступа
-		cout << setw(spaces) << " " << node->key << endl;
-		// Вывод левого поддерева с отступом
-		printTree(node->left, spaces + 4);
-	}
+	// Обход в ширину (уровневый)
+	void levelOrderTraversal();
 
-	// остальные приватные члены класса...
+	// Префиксный обход (корень-лево-право)
+	void preOrderTraversal();
+
+private:
+	// Вспомогательная функция для вывода дерева
+	void printTree(Node* node, int spaces);
+
+	// Вспомогательная функция для префиксного обхода
+	void preOrderTraversal(Node* node);
 };
 
-Node* BinaryTree::addNode(Node* currentNode, Node* otherNode)
-{
+// Вспомогательная функция для добавления узла
+Node* BinaryTree::addNode(Node* currentNode, Node* otherNode) {
 	if (!otherNode) {
 		return nullptr;
 	}
@@ -121,8 +116,8 @@ Node* BinaryTree::addNode(Node* currentNode, Node* otherNode)
 	return currentNode;
 }
 
-void BinaryTree::deleteBinaryTree(Node* node)
-{
+// Вспомогательная функция для удаления дерева
+void BinaryTree::deleteBinaryTree(Node* node) {
 	if (node) {
 		deleteBinaryTree(node->left);
 		deleteBinaryTree(node->right);
@@ -130,33 +125,28 @@ void BinaryTree::deleteBinaryTree(Node* node)
 	}
 }
 
-void BinaryTree::addNode(int value)
-{
+// Функция добавления узла по значению
+void BinaryTree::addNode(int value) {
 	if (root == nullptr) {
 		root = new Node(value);
 		return;
 	}
 	Node* node = root;
 	while (node) {
-		if (node->key > value && node->left == nullptr) {
+		if (value < node->key && node->left == nullptr) {
 			node->left = new Node(value);
 			return;
 		}
-		else if (node->key <= value && node->right == nullptr) {
+		else if (value >= node->key && node->right == nullptr) {
 			node->right = new Node(value);
 			return;
 		}
-		if (node->key > value) {
-			node = node->left;
-		}
-		else {
-			node = node->right;
-		}
+		node = (value < node->key) ? node->left : node->right;
 	}
 }
 
-BinaryTree& BinaryTree::operator=(const BinaryTree& otherTree)
-{
+// Перегрузка оператора присваивания
+BinaryTree& BinaryTree::operator=(const BinaryTree& otherTree) {
 	if (this != &otherTree) {
 		deleteBinaryTree(root);
 		root = addNode(root, otherTree.root);
@@ -164,115 +154,177 @@ BinaryTree& BinaryTree::operator=(const BinaryTree& otherTree)
 	return *this;
 }
 
-Node* BinaryTree::findNodeByKey(int keyValue)
-{
-	if (root == nullptr) {
-		return nullptr;
-	}
+// Функция поиска узла по ключу
+Node* BinaryTree::findNodeByKey(int keyValue) {
 	Node* currentNode = root;
 	while (currentNode) {
 		if (currentNode->key == keyValue) {
 			return currentNode;
 		}
-		else if (currentNode->key > keyValue && currentNode->left == nullptr) {
-			return nullptr;
-		}
-		else if (currentNode->key <= keyValue && currentNode->right == nullptr) {
-			return nullptr;
-		}
-		if (currentNode->key > keyValue) {
-			currentNode = currentNode->left;
-		}
-		else {
-			currentNode = currentNode->right;
-		}
+		currentNode = (keyValue < currentNode->key) ? currentNode->left : currentNode->right;
 	}
-	return nullptr; // не найден
+	return nullptr;
 }
 
-Node* BinaryTree::findMin()
-{
-	if (root == nullptr) {
+// Вспомогательная функция для поиска минимального значения в поддереве
+Node* BinaryTree::findMin(Node* node) {
+	while (node && node->left) {
+		node = node->left;
+	}
+	return node;
+}
+
+// Вспомогательная функция для поиска максимального значения в поддереве
+Node* BinaryTree::findMax(Node* node) {
+	while (node && node->right) {
+		node = node->right;
+	}
+	return node;
+}
+
+// Функция поиска минимального узла
+Node* BinaryTree::findMin() {
+	return findMin(root);
+}
+
+// Функция поиска максимального узла
+Node* BinaryTree::findMax() {
+	return findMax(root);
+}
+
+// Функция удаления узла по ключу
+void BinaryTree::deleteByKey(int value) {
+	root = deleteByValue(root, value);
+}
+
+// Вспомогательная функция для удаления узла по значению
+Node* BinaryTree::deleteByValue(Node* node, int value) {
+	if (!node) {
 		return nullptr;
 	}
-	Node* currentNode = root;
-	while (currentNode->left) {
-		currentNode = currentNode->left;
+
+	if (value < node->key) {
+		node->left = deleteByValue(node->left, value);
 	}
-	return currentNode;
+	else if (value > node->key) {
+		node->right = deleteByValue(node->right, value);
+	}
+	else {
+		if (!node->left) {
+			Node* temp = node->right;
+			delete node;
+			return temp;
+		}
+		else if (!node->right) {
+			Node* temp = node->left;
+			delete node;
+			return temp;
+		}
+
+		Node* temp = findMin(node->right);
+		node->key = temp->key;
+		node->right = deleteByValue(node->right, temp->key);
+	}
+	return node;
 }
 
-Node* BinaryTree::findMax()
-{
-	if (root == nullptr) {
-		return nullptr;
-	}
-	Node* currentNode = root;
-	while (currentNode->right) {
-		currentNode = currentNode->right;
-	}
-	return currentNode;
+// Функция удаления узла по указателю
+void BinaryTree::deleteNode(Node* node) {
+	root = deleteByValue(root, node->key);
 }
 
-void BinaryTree::levelOrderTraversal()
-{
+// Вспомогательная функция для вывода дерева
+void BinaryTree::printTree(Node* node, int spaces) {
+	if (node == nullptr) {
+		return;
+	}
+	printTree(node->right, spaces + 4);
+	cout << setw(spaces) << " " << node->key << endl;
+	printTree(node->left, spaces + 4);
+}
+
+// Обход в ширину (уровневый)
+void BinaryTree::levelOrderTraversal() {
 	if (root == nullptr) {
 		return;
 	}
 	queue<Node*> q;
 	q.push(root);
 	while (!q.empty()) {
-		Node* currentNode = q.front();
+		Node* current = q.front();
 		q.pop();
-		cout << currentNode->key << " ";
-		if (currentNode->left) {
-			q.push(currentNode->left);
+		cout << current->key << " ";
+		if (current->left) {
+			q.push(current->left);
 		}
-		if (currentNode->right) {
-			q.push(currentNode->right);
+		if (current->right) {
+			q.push(current->right);
 		}
 	}
 	cout << endl;
 }
 
-void BinaryTree::inorderTraversal(Node* node)
-{
+// Префиксный обход (корень-лево-право)
+void BinaryTree::preOrderTraversal() {
+	preOrderTraversal(root);
+	cout << endl;
+}
+
+// Вспомогательная функция для префиксного обхода
+void BinaryTree::preOrderTraversal(Node* node) {
 	if (node == nullptr) {
 		return;
 	}
-	inorderTraversal(node->left);
+	preOrderTraversal(node->left);
+	preOrderTraversal(node->right);
 	cout << node->key << " ";
-	inorderTraversal(node->right);
-}
-
-void BinaryTree::inorderTraversal()
-{
-	inorderTraversal(root);
-	cout << endl;
 }
 
 int main() {
+	srand(time(NULL));
+	//8 11 2 15 19 13 12 7 10 18
 	int length;
-	cout << "Enter the number of elements in the tree: ";
+	cout << "Enter num of Nodes: ";
 	cin >> length;
 
-	int* values = new int[length];
-	cout << "Enter the values for the tree elements:" << endl;
+	/*int* values = new int[length];
+	cout << "Enter Node values:" << endl;
 	for (int i = 0; i < length; ++i) {
-		cout << "Element " << i + 1 << ": ";
+		cout << "Elem: " << i + 1 << ": ";
 		cin >> values[i];
-	}
+	}*/
 
-	BinaryTree tree(length, values);
+	BinaryTree tree(length);
 
+	cout << "Start tree structure:" << endl;
+	tree.printTree();
+
+	// Добавление нового элемента
+	int newValue;
+	cout << "Enter value of Node to add: ";
+	cin >> newValue;
+	tree.addNode(newValue);
+
+	cout << "Tree after deleting Node " << newValue << ":" << endl;
+	tree.printTree();
+
+	// Удаление элемента по значению
+	int keyToDelete;
+	cout << "Enter valye of Node to delete: ";
+	cin >> keyToDelete;
+	tree.deleteByKey(keyToDelete);
+
+	cout << "Tree with deleted Node " << keyToDelete << ":" << endl;
+	tree.printTree();
+
+	// Обход в ширину (уровневый)
 	cout << "Level Order Traversal: ";
 	tree.levelOrderTraversal();
 
-	cout << "Inorder Traversal: ";
-	tree.inorderTraversal();
+	// Префиксный обход (корень-лево-право)
+	cout << "Prefix Traversal: ";
+	tree.preOrderTraversal();
 
-	cout << "Tree Structure:" << endl;
-	tree.printTree();
-
+	//delete[] values;
 	return 0;
 }
