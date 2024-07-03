@@ -1,0 +1,18 @@
+﻿  Arifmetic.cpp
+C:\TSU_labs\2.1-coding\Arifmetic\Arifmetic.cpp(269,45): warning C4293: <<: отрицательное или слишком большое смещение; поведение не определено
+C:\TSU_labs\2.1-coding\Arifmetic\Arifmetic.cpp(292,9): error C2593: неоднозначный "оператор +="
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\xstring(3271,32):
+  может быть "std::basic_string<char,std::char_traits<char>,std::allocator<char>> &std::basic_string<char,std::char_traits<char>,std::allocator<char>>::operator +=(_Elem)"
+          with
+          [
+              _Elem=char
+          ]
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\xstring(3267,32):
+  или       "std::basic_string<char,std::char_traits<char>,std::allocator<char>> &std::basic_string<char,std::char_traits<char>,std::allocator<char>>::operator +=(const _Elem *const )"
+          with
+          [
+              _Elem=char
+          ]
+  C:\TSU_labs\2.1-coding\Arifmetic\Arifmetic.cpp(292,9):
+  при попытке сопоставить список аргументов "(std::string, int)"
+  

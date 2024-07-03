@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\TSU_labs\\2.1-coding\\Hufman\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0BCF8951-F7AD-4155-8B73-2D858FC61A40}|Hufman.vcxproj|C:\\TSU_labs\\2.1-coding\\Hufman\\Hufman.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{0BCF8951-F7AD-4155-8B73-2D858FC61A40}|Hufman.vcxproj|solutionrelative:Hufman.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 100,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Hufman.cpp",
+              "DocumentMoniker": "C:\\TSU_labs\\2.1-coding\\Hufman\\Hufman.cpp",
+              "RelativeDocumentMoniker": "Hufman.cpp",
+              "ToolTip": "C:\\TSU_labs\\2.1-coding\\Hufman\\Hufman.cpp",
+              "RelativeToolTip": "Hufman.cpp",
+              "ViewState": "AQIAAFkBAAAAAAAAAAAAAHkBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-07-03T03:06:46.693Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

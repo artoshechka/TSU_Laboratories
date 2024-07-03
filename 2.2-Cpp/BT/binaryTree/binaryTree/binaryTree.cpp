@@ -287,14 +287,14 @@ int main() {
 	cout << "Enter num of Nodes: ";
 	cin >> length;
 
-	/*int* values = new int[length];
+	int* values = new int[length];
 	cout << "Enter Node values:" << endl;
 	for (int i = 0; i < length; ++i) {
 		cout << "Elem: " << i + 1 << ": ";
 		cin >> values[i];
-	}*/
+	}
 
-	BinaryTree tree(length);
+	BinaryTree tree(length,values);
 
 	cout << "Start tree structure:" << endl;
 	tree.printTree();

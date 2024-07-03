@@ -1,12 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\2.1-coding",
     "\\2.2-Cpp",
-    "\\2.2-Cpp\\BN",
     "\\2.2-Cpp\\BT",
     "\\2.2-Cpp\\BT\\binaryTree",
-    "\\2.2-Cpp\\BT\\binaryTree\\binaryTree"
+    "\\2.2-Cpp\\BT\\binaryTree\\binaryTree",
+    "\\2.2-Cpp\\BT\\binaryTree\\Debug",
+    "\\2.2-Cpp\\BT\\binaryTree\\x64"
   ],
-  "SelectedNode": "\\2.2-Cpp\\BN\\bigNumbers.cpp",
+  "SelectedNode": "\\2.1-coding",
   "PreviewInSolutionExplorer": false
 }
