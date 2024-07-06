@@ -2,13 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\2.1-coding",
+    "\\2.1-coding\\Arifmetic",
+    "\\2.1-coding\\Arifmetic\\Debug",
+    "\\2.1-coding\\Hufman",
+    "\\2.1-coding\\Hufman\\Debug",
     "\\2.2-Cpp",
     "\\2.2-Cpp\\BT",
     "\\2.2-Cpp\\BT\\binaryTree",
-    "\\2.2-Cpp\\BT\\binaryTree\\binaryTree",
-    "\\2.2-Cpp\\BT\\binaryTree\\Debug",
-    "\\2.2-Cpp\\BT\\binaryTree\\x64"
+    "\\2.2-Cpp\\BT\\binaryTree\\binaryTree"
   ],
-  "SelectedNode": "\\2.1-coding",
+  "SelectedNode": "\\2.1-coding\\Arifmetic\\Debug\\ranges.dat",
   "PreviewInSolutionExplorer": false
 }

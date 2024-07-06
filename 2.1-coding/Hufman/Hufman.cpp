@@ -30,6 +30,45 @@ private:
 		}
 	}
 
+	// Вспомогательная функция для нахождения минимального узла в поддереве
+	BinaryTreeElement* findMin(BinaryTreeElement* node) {
+		while (node->left) {
+			node = node->left;
+		}
+		return node;
+	}
+
+	// Вспомогательная функция для рекурсивного удаления узла
+	BinaryTreeElement* erase(BinaryTreeElement* node, unsigned char key) {
+		if (!node) {
+			return nullptr;
+		}
+
+		if (key < node->data) {
+			node->left = erase(node->left, key);
+		}
+		else if (key > node->data) {
+			node->right = erase(node->right, key);
+		}
+		else {
+			if (!node->left) {
+				BinaryTreeElement* temp = node->right;
+				delete node;
+				return temp;
+			}
+			else if (!node->right) {
+				BinaryTreeElement* temp = node->left;
+				delete node;
+				return temp;
+			}
+
+			BinaryTreeElement* temp = findMin(node->right);
+			node->data = temp->data;
+			node->right = erase(node->right, temp->data);
+		}
+		return node;
+	}
+
 public:
 	// Конструктор по умолчанию
 	BinaryTree() : root(nullptr) {}
@@ -66,7 +105,7 @@ void BinaryTree::insert(unsigned char key) {
 		return;
 	}
 	BinaryTreeElement* current = root;
-	while (true) {
+	while (current) {
 		if (current->data > key) {
 			if (!current->left) {
 				current->left = new BinaryTreeElement(key);
@@ -89,51 +128,7 @@ void BinaryTree::insert(unsigned char key) {
 
 // Определение удаления
 void BinaryTree::erase(unsigned char key) {
-	BinaryTreeElement* curr = root;
-	BinaryTreeElement* parent = nullptr;
-
-	while (curr && curr->data != key) {
-		parent = curr;
-		curr = (curr->data > key) ? curr->left : curr->right;
-	}
-
-	if (!curr) return;
-
-	auto replaceNode = [](BinaryTreeElement*& node) -> BinaryTreeElement* {
-		BinaryTreeElement* parent = node;
-		BinaryTreeElement* child = node->left;
-		while (child->right) {
-			parent = child;
-			child = child->right;
-		}
-		if (parent != node) {
-			parent->right = child->left;
-			child->left = node->left;
-		}
-		child->right = node->right;
-		return child;
-		};
-
-	BinaryTreeElement* replacement = nullptr;
-
-	if (curr->left && curr->right) {
-		replacement = replaceNode(curr);
-	}
-	else {
-		replacement = (curr->left) ? curr->left : curr->right;
-	}
-
-	if (!parent) {
-		root = replacement;
-	}
-	else if (parent->left == curr) {
-		parent->left = replacement;
-	}
-	else {
-		parent->right = replacement;
-	}
-
-	delete curr;
+	root = erase(root, key);
 }
 
 // Функция для построения таблицы частот символов в файле
@@ -182,7 +177,6 @@ void generateCodes(BinaryTreeElement* node, const string& code, unordered_map<un
 	generateCodes(node->right, code + "1", codes);
 }
 
-
 // Функция для сохранения таблицы кодов Хаффмана в файл
 void saveHuffmanCodes(const unordered_map<unsigned char, string>& codes, const string& filename) {
 	ofstream codeFile(filename, ios::binary);
@@ -204,31 +198,6 @@ void saveHuffmanCodes(const unordered_map<unsigned char, string>& codes, const s
 	codeFile.close();
 }
 
-// Функция для загрузки таблицы кодов Хаффмана из файла
-unordered_map<unsigned char, string> loadHuffmanCodes(const string& filename) {
-	ifstream codeFile(filename, ios::binary);
-	unordered_map<unsigned char, string> codes;
-	if (!codeFile) {
-		cerr << "Error opening code file." << endl;
-		return codes;
-	}
-
-	size_t tableSize;
-	codeFile.read(reinterpret_cast<char*>(&tableSize), sizeof(size_t));
-
-	for (size_t i = 0; i < tableSize; ++i) {
-		unsigned char symbol;
-		codeFile.get(reinterpret_cast<char&>(symbol));
-		size_t codeLength;
-		codeFile.read(reinterpret_cast<char*>(&codeLength), sizeof(size_t));
-		string codeBuffer(codeLength, ' ');
-		codeFile.read(&codeBuffer[0], codeLength);
-		codes[symbol] = codeBuffer;
-	}
-
-	codeFile.close();
-	return codes;
-}
 
 // Функция для кодирования файла с использованием таблицы кодов
 void encodeFile(const string& inputFilename, const string& outputFilename, const unordered_map<unsigned char, string>& codes) {
@@ -238,18 +207,6 @@ void encodeFile(const string& inputFilename, const string& outputFilename, const
 	if (!inputFile || !outputFile) {
 		cerr << "Error opening input or output file." << endl;
 		return;
-	}
-
-	// Записываем размер таблицы в начало файла
-	size_t tableSize = codes.size();
-	outputFile.write(reinterpret_cast<const char*>(&tableSize), sizeof(size_t));
-
-	// Записываем таблицу кодов в файл
-	for (const auto& pair : codes) {
-		outputFile.put(pair.first);
-		size_t codeLength = pair.second.length();
-		outputFile.write(reinterpret_cast<const char*>(&codeLength), sizeof(size_t));
-		outputFile.write(pair.second.c_str(), codeLength);
 	}
 
 	unsigned char ch;
@@ -285,28 +242,30 @@ void encodeFile(const string& inputFilename, const string& outputFilename, const
 }
 
 // Функция для декодирования файла с использованием дерева Хаффмана и таблицы кодов
-void decodeFile(const string& inputFilename, const string& outputFilename, const unordered_map<unsigned char, string>& codes) {
+void decodeFile(const string& inputFilename, const string& outputFilename, const string& codeFilename) {
 	ifstream inputFile(inputFilename, ios::binary);
+	ifstream codeFile(codeFilename, ios::binary);
 	ofstream outputFile(outputFilename, ios::binary);
 
-	if (!inputFile || !outputFile) {
+
+	if (!inputFile || !outputFile || !codeFile) {
 		cerr << "Error opening input or output file." << endl;
 		return;
 	}
 
 	// Читаем размер таблицы из начала файла
 	size_t tableSize;
-	inputFile.read(reinterpret_cast<char*>(&tableSize), sizeof(size_t));
+	codeFile.read(reinterpret_cast<char*>(&tableSize), sizeof(size_t));
 
 	// Читаем таблицу кодов из файла
 	unordered_map<string, unsigned char> inverseCodes;
 	for (size_t i = 0; i < tableSize; ++i) {
 		unsigned char symbol;
-		inputFile.get(reinterpret_cast<char&>(symbol));
+		codeFile.get(reinterpret_cast<char&>(symbol));
 		size_t codeLength;
-		inputFile.read(reinterpret_cast<char*>(&codeLength), sizeof(size_t));
+		codeFile.read(reinterpret_cast<char*>(&codeLength), sizeof(size_t));
 		string codeBuffer(codeLength, ' ');
-		inputFile.read(&codeBuffer[0], codeLength);
+		codeFile.read(&codeBuffer[0], codeLength);
 		inverseCodes[codeBuffer] = symbol;
 	}
 
@@ -324,6 +283,7 @@ void decodeFile(const string& inputFilename, const string& outputFilename, const
 	}
 
 	inputFile.close();
+	codeFile.close();
 	outputFile.close();
 }
 
@@ -358,14 +318,8 @@ int main() {
 		cout << "File has been encoded successfully." << endl;
 	}
 	else if (mark == 2) {
-		// Загрузка таблицы кодов Хаффмана из файла
-		unordered_map<unsigned char, string> codes = loadHuffmanCodes("huffman_codes.bin");
-		if (codes.empty()) {
-			cerr << "Failed to load Huffman codes." << endl;
-			return 1;
-		}
 		// Декодирование файла
-		decodeFile("encoded_file.bin", "decoded_file.txt", codes);
+		decodeFile("encoded_file.bin", "decoded_file.txt", "huffman_codes.bin");
 		cout << "File has been decoded successfully." << endl;
 	}
 	else {
