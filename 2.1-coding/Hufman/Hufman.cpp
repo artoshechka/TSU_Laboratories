@@ -1,4 +1,5 @@
 #include "Hufman.h"
+
 int main() {
 	// Выбор режима: кодирование или декодирование файла
 	int mark;
@@ -22,16 +23,20 @@ int main() {
 		unordered_map<unsigned char, string> codes;
 		generateCodes(tree.getRoot(), "", codes);
 
-		// Сохранение таблицы кодов Хаффмана в файл
-		saveHuffmanCodes(codes, "huffman_codes.bin");
+		// Кодирование файла и получение закодированных данных
+		string encodedData = encodeFile("text.txt", codes);
+		if (encodedData.empty()) {
+			cerr << "Failed to encode the file." << endl;
+			return 1;
+		}
 
-		// Кодирование файла
-		encodeFile("text.txt", "encoded_file.bin", codes);
+		// Сохранение таблицы кодов Хаффмана и закодированных данных в один файл
+		saveHuffmanCodesAndEncodedData(codes, encodedData, "encoded_file.bin");
 		cout << "File has been encoded successfully." << endl;
 	}
 	else if (mark == 2) {
 		// Декодирование файла
-		decodeFile("encoded_file.bin", "decoded_file.txt", "huffman_codes.bin");
+		decodeFile("encoded_file.bin", "decoded_file.txt");
 		cout << "File has been decoded successfully." << endl;
 	}
 	else {

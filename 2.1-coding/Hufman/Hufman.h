@@ -177,40 +177,45 @@ void generateCodes(BinaryTreeElement* node, const string& code, unordered_map<un
 	generateCodes(node->right, code + "1", codes);
 }
 
-// Функция для сохранения таблицы кодов Хаффмана в файл
-void saveHuffmanCodes(const unordered_map<unsigned char, string>& codes, const string& filename) {
-	ofstream codeFile(filename, ios::binary);
-	if (!codeFile) {
-		cerr << "Error opening code file." << endl;
+// Функция для сохранения таблицы кодов Хаффмана и закодированных данных в один файл
+void saveHuffmanCodesAndEncodedData(const unordered_map<unsigned char, string>& codes, const string& encodedData, const string& filename) {
+	ofstream file(filename, ios::binary);
+	if (!file) {
+		cerr << "Error opening file for saving codes and data." << endl;
 		return;
 	}
 
+	// Сохраняем таблицу кодов
 	size_t tableSize = codes.size();
-	codeFile.write(reinterpret_cast<const char*>(&tableSize), sizeof(size_t));
+	file.write(reinterpret_cast<const char*>(&tableSize), sizeof(size_t));
 
 	for (const auto& pair : codes) {
-		codeFile.put(pair.first);
+		file.put(pair.first);
 		size_t codeLength = pair.second.length();
-		codeFile.write(reinterpret_cast<const char*>(&codeLength), sizeof(size_t));
-		codeFile.write(pair.second.c_str(), codeLength);
+		file.write(reinterpret_cast<const char*>(&codeLength), sizeof(size_t));
+		file.write(pair.second.c_str(), codeLength);
 	}
 
-	codeFile.close();
+	// Сохраняем закодированные данные
+	size_t encodedLength = encodedData.length();
+	file.write(reinterpret_cast<const char*>(&encodedLength), sizeof(size_t));
+	file.write(encodedData.c_str(), encodedLength);
+
+	file.close();
 }
 
 
-// Функция для кодирования файла с использованием таблицы кодов
-void encodeFile(const string& inputFilename, const string& outputFilename, const unordered_map<unsigned char, string>& codes) {
+// Функция для кодирования файла с использованием таблицы кодов и возврата закодированных данных
+string encodeFile(const string& inputFilename, const unordered_map<unsigned char, string>& codes) {
 	ifstream inputFile(inputFilename, ios::binary);
-	ofstream outputFile(outputFilename, ios::binary);
-
-	if (!inputFile || !outputFile) {
-		cerr << "Error opening input or output file." << endl;
-		return;
+	if (!inputFile) {
+		cerr << "Error opening input file." << endl;
+		return "";
 	}
 
-	unsigned char ch;
 	string buffer;
+	string encodedData;
+	unsigned char ch;
 	while (inputFile.get(reinterpret_cast<char&>(ch))) {
 		auto it = codes.find(ch);
 		if (it != codes.end()) {
@@ -221,12 +226,13 @@ void encodeFile(const string& inputFilename, const string& outputFilename, const
 					byte <<= 1;
 					byte |= buffer[i] - '0';
 				}
-				outputFile.put(byte);
+				encodedData += byte;  // Добавляем байт в закодированные данные
 				buffer = buffer.substr(8);
 			}
 		}
 	}
 
+	// Обрабатываем остаток
 	if (!buffer.empty()) {
 		char byte = 0;
 		for (size_t i = 0; i < buffer.length(); ++i) {
@@ -234,44 +240,49 @@ void encodeFile(const string& inputFilename, const string& outputFilename, const
 			byte |= buffer[i] - '0';
 		}
 		byte <<= (8 - buffer.length());
-		outputFile.put(byte);
+		encodedData += byte;  // Добавляем остаток в закодированные данные
 	}
 
 	inputFile.close();
-	outputFile.close();
+	return encodedData;  // Возвращаем закодированные данные
 }
 
+
 // Функция для декодирования файла с использованием дерева Хаффмана и таблицы кодов
-void decodeFile(const string& inputFilename, const string& outputFilename, const string& codeFilename) {
-	ifstream inputFile(inputFilename, ios::binary);
-	ifstream codeFile(codeFilename, ios::binary);
+void decodeFile(const string& filename, const string& outputFilename) {
+	ifstream file(filename, ios::binary);
 	ofstream outputFile(outputFilename, ios::binary);
 
-
-	if (!inputFile || !outputFile || !codeFile) {
+	if (!file || !outputFile) {
 		cerr << "Error opening input or output file." << endl;
 		return;
 	}
 
 	// Читаем размер таблицы из начала файла
 	size_t tableSize;
-	codeFile.read(reinterpret_cast<char*>(&tableSize), sizeof(size_t));
+	file.read(reinterpret_cast<char*>(&tableSize), sizeof(size_t));
 
 	// Читаем таблицу кодов из файла
 	unordered_map<string, unsigned char> inverseCodes;
 	for (size_t i = 0; i < tableSize; ++i) {
 		unsigned char symbol;
-		codeFile.get(reinterpret_cast<char&>(symbol));
+		file.get(reinterpret_cast<char&>(symbol));
 		size_t codeLength;
-		codeFile.read(reinterpret_cast<char*>(&codeLength), sizeof(size_t));
+		file.read(reinterpret_cast<char*>(&codeLength), sizeof(size_t));
 		string codeBuffer(codeLength, ' ');
-		codeFile.read(&codeBuffer[0], codeLength);
+		file.read(&codeBuffer[0], codeLength);
 		inverseCodes[codeBuffer] = symbol;
 	}
 
+	// Читаем закодированные данные
+	size_t encodedLength;
+	file.read(reinterpret_cast<char*>(&encodedLength), sizeof(size_t));
+	string encodedData(encodedLength, ' ');
+	file.read(&encodedData[0], encodedLength);
+
+	// Декодируем данные
 	string buffer;
-	char ch;
-	while (inputFile.get(ch)) {
+	for (char ch : encodedData) {
 		for (int i = 7; i >= 0; --i) {
 			buffer += (ch & (1 << i)) ? '1' : '0';
 			auto it = inverseCodes.find(buffer);
@@ -282,7 +293,6 @@ void decodeFile(const string& inputFilename, const string& outputFilename, const
 		}
 	}
 
-	inputFile.close();
-	codeFile.close();
+	file.close();
 	outputFile.close();
 }
